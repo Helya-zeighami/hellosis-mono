@@ -1,0 +1,429 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+// =====================
+// ENUMS
+// =====================
+
+enum GroupRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+  REJECTED
+}
+
+
+// =====================
+// USER
+// =====================
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  username     String   @unique
+  isVerified   Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  profile Profile?
+
+
+  interests UserInterest[]
+
+
+  createdGroups Group[] @relation("GroupCreator")
+
+  groupMemberships GroupMember[]
+
+
+  sentMessages     Message[] @relation("MessageSender")
+  receivedMessages Message[] @relation("MessageReceiver")
+
+
+  createdEvents Event[] @relation("EventCreator")
+
+
+  reviews Review[]
+
+
+  reportsSent Report[] @relation("Reporter")
+  reportsReceived Report[] @relation("ReportedUser")
+
+
+  notifications Notification[]
+
+
+  @@map("users")
+}
+
+
+// =====================
+// PROFILE
+// =====================
+
+model Profile {
+  id String @id @default(uuid())
+
+  userId String @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+  firstName String?
+  lastName  String?
+
+  bio       String?
+  avatarUrl String?
+
+  birthDate DateTime?
+
+
+  cityId String?
+  city   City? @relation(fields: [cityId], references: [id])
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  @@map("profiles")
+}
+
+
+// =====================
+// CITY
+// =====================
+
+model City {
+  id String @id @default(uuid())
+
+  name    String
+  country String
+
+
+  profiles Profile[]
+
+  groups Group[]
+
+  places Place[]
+
+
+  createdAt DateTime @default(now())
+
+
+  @@map("cities")
+}
+
+
+// =====================
+// INTEREST
+// =====================
+
+model Interest {
+  id String @id @default(uuid())
+
+  name String @unique
+
+
+  users UserInterest[]
+
+
+  createdAt DateTime @default(now())
+
+
+  @@map("interests")
+}
+
+
+// =====================
+// USER INTEREST
+// =====================
+
+model UserInterest {
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+  interestId String
+  interest   Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
+
+
+  @@id([userId, interestId])
+
+
+  @@map("user_interests")
+}
+
+
+// =====================
+// GROUP
+// =====================
+
+model Group {
+
+  id String @id @default(uuid())
+
+
+  creatorId String
+  creator   User @relation("GroupCreator", fields: [creatorId], references: [id])
+
+
+  cityId String?
+  city   City? @relation(fields: [cityId], references: [id])
+
+
+  name        String
+  description String?
+  imageUrl    String?
+
+
+  members GroupMember[]
+
+
+  events Event[]
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  @@map("groups")
+}
+
+
+// =====================
+// GROUP MEMBER
+// =====================
+
+model GroupMember {
+
+  id String @id @default(uuid())
+
+
+  groupId String
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+  role GroupRole @default(MEMBER)
+
+
+  joinedAt DateTime @default(now())
+
+
+  @@unique([groupId, userId])
+
+
+  @@map("group_members")
+}
+
+
+// =====================
+// MESSAGE
+// =====================
+
+model Message {
+
+  id String @id @default(uuid())
+
+
+  senderId String
+  sender User @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+
+  receiverId String
+  receiver User @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+
+  content String
+
+
+  createdAt DateTime @default(now())
+
+
+  @@index([senderId])
+  @@index([receiverId])
+
+
+  @@map("messages")
+}
+
+
+// =====================
+// EVENT
+// =====================
+
+model Event {
+
+  id String @id @default(uuid())
+
+
+  creatorId String
+  creator User @relation("EventCreator", fields: [creatorId], references: [id])
+
+
+  groupId String?
+  group Group? @relation(fields: [groupId], references: [id])
+
+
+  placeId String?
+  place Place? @relation(fields: [placeId], references: [id])
+
+
+  title String
+
+  description String?
+
+
+  startTime DateTime
+  endTime   DateTime?
+
+
+  createdAt DateTime @default(now())
+
+
+  @@map("events")
+}
+
+
+// =====================
+// PLACE
+// =====================
+
+model Place {
+
+  id String @id @default(uuid())
+
+
+  cityId String?
+  city City? @relation(fields: [cityId], references: [id])
+
+
+  name String
+
+  address String?
+
+
+  latitude  Float?
+  longitude Float?
+
+
+  events Event[]
+
+  reviews Review[]
+
+
+  createdAt DateTime @default(now())
+
+
+  @@map("places")
+}
+
+
+// =====================
+// REVIEW
+// =====================
+
+model Review {
+
+  id String @id @default(uuid())
+
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+  placeId String
+  place Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
+
+
+  rating Int
+
+  comment String?
+
+
+  createdAt DateTime @default(now())
+
+
+  @@map("reviews")
+}
+
+
+// =====================
+// REPORT
+// =====================
+
+model Report {
+
+  id String @id @default(uuid())
+
+
+  reporterId String
+  reporter User @relation("Reporter", fields: [reporterId], references: [id])
+
+
+  reportedUserId String
+  reportedUser User @relation("ReportedUser", fields: [reportedUserId], references: [id])
+
+
+  reason String
+
+
+  status ReportStatus @default(PENDING)
+
+
+  createdAt DateTime @default(now())
+
+
+  @@map("reports")
+}
+
+
+// =====================
+// NOTIFICATION
+// =====================
+
+model Notification {
+
+  id String @id @default(uuid())
+
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+  type String
+
+  message String
+
+  isRead Boolean @default(false)
+
+
+  createdAt DateTime @default(now())
+
+
+  @@index([userId, isRead])
+
+
+  @@map("notifications")
+}

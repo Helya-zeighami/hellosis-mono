@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "title": "Hellosis",
+    "description": "Discover groups, events and places around you."
+  },
+  "home": {
+    "heading": "Welcome to Hellosis",
+    "subheading": "Find communities, events and local places near you.",
+    "getStarted": "Get started"
+  },
+  "localeSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "fa": "فارسی"
+  }
+}
