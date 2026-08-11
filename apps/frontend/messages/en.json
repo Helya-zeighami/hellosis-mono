@@ -4,9 +4,43 @@
     "description": "Discover groups, events and places around you."
   },
   "home": {
-    "heading": "Welcome to Hellosis",
-    "subheading": "Find communities, events and local places near you.",
-    "getStarted": "Get started"
+    "badge": "For women, by women",
+    "heading": "Meet women who share your world",
+    "subheading": "Join interest-based groups, chat in trusted circles, attend events and discover community-approved places — all in a safe space built for real connections.",
+    "createAccount": "Create account",
+    "explore": "Explore groups",
+    "trust": "Verified identity",
+    "trustDetail": "Every member is verified for your safety",
+    "communityMembers": "members this week",
+    "features": {
+      "groups": {
+        "title": "Interest groups",
+        "description": "Discover like-minded women and join communities around hobbies, causes and your city."
+      },
+      "chats": {
+        "title": "Private & group chats",
+        "description": "Talk securely with members through safe, moderated conversations."
+      },
+      "events": {
+        "title": "Real events",
+        "description": "Meet in person at community events designed around shared interests."
+      },
+      "places": {
+        "title": "Trusted places",
+        "description": "Find places recommended and reviewed by women you trust."
+      }
+    },
+    "safety": {
+      "title": "Safety first, always",
+      "description": "Identity verification, community moderation and privacy controls keep every conversation secure.",
+      "points": ["Verified members only", "Moderated communities", "Full control over your privacy"]
+    },
+    "join": {
+      "title": "Your community is waiting",
+      "description": "Create your profile, pick your interests and start connecting.",
+      "cta": "Join Hellosis"
+    },
+    "footer": "Made with care for women everywhere."
   },
   "localeSwitcher": {
     "label": "Language",

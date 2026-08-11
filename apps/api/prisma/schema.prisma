@@ -27,52 +27,47 @@ enum ReportStatus {
 }
 
 
+
 // =====================
 // USER
 // =====================
 
 model User {
   id           String   @id @default(uuid())
-  email        String   @unique
-  passwordHash String
+
   username     String   @unique
+  passwordHash String
+
+  mobile       String   @unique
+
+  nationalCode String   @unique
+
   isVerified   Boolean  @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   profile Profile?
 
-
   interests UserInterest[]
 
-
-  createdGroups Group[] @relation("GroupCreator")
-
+  createdGroups    Group[]       @relation("GroupCreator")
   groupMemberships GroupMember[]
-
 
   sentMessages     Message[] @relation("MessageSender")
   receivedMessages Message[] @relation("MessageReceiver")
 
-
   createdEvents Event[] @relation("EventCreator")
-
 
   reviews Review[]
 
-
-  reportsSent Report[] @relation("Reporter")
+  reportsSent     Report[] @relation("Reporter")
   reportsReceived Report[] @relation("ReportedUser")
-
 
   notifications Notification[]
 
-
   @@map("users")
 }
-
 
 // =====================
 // PROFILE
