@@ -12,6 +12,7 @@ export const queryKeys = {
   },
   cities: {
     all: ["cities"] as const,
+    search: (query: string) => ["cities", "search", query] as const,
     detail: (id: string) => ["cities", id] as const,
   },
   interests: {

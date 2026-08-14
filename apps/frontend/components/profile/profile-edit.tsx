@@ -23,24 +23,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 
 import { InterestSelector } from "@/components/profile/interest-selector"
+import { CityCombobox } from "@/components/profile/city-combobox"
 import {
   useProfile,
   useUpdateProfile,
   useAddProfileInterest,
   useRemoveProfileInterest,
-  useCities,
 } from "@/hooks/use-profile"
-import type { UpdateProfileInput } from "@/services"
+import type { City, UpdateProfileInput } from "@/services"
 
 function EditProfileSkeleton() {
   return (
@@ -81,17 +74,12 @@ export default function EditProfilePage() {
   const format = useFormatter()
 
   const { data: profile, isLoading, isError, refetch } = useProfile()
-  const {
-    data: cities,
-    isLoading: citiesLoading,
-    isError: citiesError,
-  } = useCities()
 
   const updateProfileMutation = useUpdateProfile()
   const addInterestMutation = useAddProfileInterest()
   const removeInterestMutation = useRemoveProfileInterest()
 
-  const [cityId, setCityId] = useState<string | null>(null)
+  const [selectedCity, setSelectedCity] = useState<City | null>(null)
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
   const [pendingInterestIds, setPendingInterestIds] = useState<string[]>([])
   const initializedRef = useRef(false)
@@ -124,7 +112,7 @@ export default function EditProfilePage() {
       avatarUrl: profile.avatarUrl ?? "",
     })
     setPreviewAvatarUrl(profile.avatarUrl ?? "")
-    setCityId(profile.city?.id ?? null)
+    setSelectedCity(profile.city)
     setSelectedInterests(profile.interests.map((interest) => interest.id))
   }, [profile, reset])
 
@@ -149,13 +137,12 @@ export default function EditProfilePage() {
   const birthDate = profile.birthDate
     ? format.dateTime(new Date(profile.birthDate), { dateStyle: "long" })
     : null
-  const selectedCity = cities?.find((city) => city.id === cityId) ?? null
 
   const onSubmit = (values: FormValues) => {
     const payload: UpdateProfileInput = {
       bio: values.bio,
       avatarUrl: values.avatarUrl ? values.avatarUrl : undefined,
-      cityId: cityId ?? undefined,
+      cityId: selectedCity?.id ?? undefined,
     }
 
     updateProfileMutation.mutate(payload, {
@@ -294,32 +281,17 @@ export default function EditProfilePage() {
               </h2>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="city">{t("fields.city")}</Label>
-                {citiesLoading ? (
-                  <Skeleton className="h-9 w-full rounded-4xl" />
-                ) : citiesError ? (
-                  <p className="text-xs text-destructive">{t("errors.city")}</p>
-                ) : (
-                  <Select
-                    value={cityId ?? "none"}
-                    onValueChange={(value) => setCityId(value === "none" ? null : value)}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue>
-                        {selectedCity
-                          ? `${selectedCity.name}, ${selectedCity.country}`
-                          : t("cityPlaceholder")}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">{t("noCity")}</SelectItem>
-                      {cities?.map((city) => (
-                        <SelectItem key={city.id} value={city.id}>
-                          {city.name}, {city.country}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
+                <CityCombobox
+                  selectedCity={selectedCity}
+                  onChange={setSelectedCity}
+                  placeholder={t("cityPlaceholder")}
+                  searchPlaceholder={t("citySearchPlaceholder")}
+                  noCityLabel={t("noCity")}
+                  noResultsLabel={t("cityNoResults")}
+                  typeToSearchLabel={t("cityTypeToSearch")}
+                  searchErrorLabel={t("citySearchError")}
+                  retryLabel={t("cityRetry")}
+                />
               </div>
             </section>
 

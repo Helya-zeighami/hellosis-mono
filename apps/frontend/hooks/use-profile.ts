@@ -5,6 +5,7 @@ import {
   updateProfile,
   getInterests,
   getCities,
+  searchCities,
   addProfileInterest,
   removeProfileInterest,
   queryKeys,
@@ -46,6 +47,17 @@ export function useCities() {
   return useQuery<City[]>({
     queryKey: queryKeys.cities.all,
     queryFn: () => getCities().then((res) => res.data as City[]),
+  })
+}
+
+export function useCitySearch(query: string) {
+  const trimmed = query.trim()
+
+  return useQuery<City[]>({
+    queryKey: queryKeys.cities.search(trimmed),
+    queryFn: () => searchCities(trimmed).then((res) => res.data as City[]),
+    enabled: trimmed.length > 0,
+    staleTime: 60_000,
   })
 }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { CitiesService } from './cities.service.js';
@@ -9,7 +9,13 @@ export class CitiesController {
   constructor(private readonly citiesService: CitiesService) {}
 
   @Get()
-  findAll() {
-    return this.citiesService.findAll();
+  findAll(
+    @Query('search') search?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.citiesService.findAll({
+      search,
+      limit: limit ? Number(limit) : undefined,
+    });
   }
 }

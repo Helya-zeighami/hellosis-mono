@@ -6,6 +6,7 @@ export {
   updateProfile,
   getInterests,
   getCities,
+  searchCities,
   addProfileInterest,
   removeProfileInterest,
   type ApiResponse,

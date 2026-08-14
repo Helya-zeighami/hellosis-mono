@@ -62,6 +62,11 @@ export function getCities() {
   return http.get<ApiResponse<City[]>>("/cities")
 }
 
+export function searchCities(query: string, limit = 20) {
+  const params = new URLSearchParams({ search: query, limit: String(limit) })
+  return http.get<ApiResponse<City[]>>(`/cities?${params.toString()}`)
+}
+
 export function addProfileInterest(interestId: string) {
   return http.post<ApiResponse<ProfileInterest>>("/profile/interests", {
     interestId,
