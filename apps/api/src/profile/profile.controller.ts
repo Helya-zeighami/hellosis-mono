@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from "@nestjs/common"
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard.js"
-import { PrismaService } from "src/prisma/prisma.service.js"
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard.js"
 import { UpdateProfileDto } from "./dto/update-profile.dto.js"
 import { AddInterestDto } from "./dto/add-interest.dto.js"
 import { ProfileService } from "./profile.service.js"

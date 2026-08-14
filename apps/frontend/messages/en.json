@@ -111,5 +111,67 @@
         "action": "See events"
       }
     }
+  },
+  "profile": {
+    "editProfile": "Edit profile",
+    "verifiedIdentity": "Verified identity",
+    "about": "About me",
+    "noName": "Unnamed",
+    "noBio": "No bio yet.",
+    "retry": "Retry",
+    "errors": {
+      "load": "Failed to load your profile."
+    },
+    "interests": {
+      "title": "Interests",
+      "empty": "You haven't added any interests yet.",
+      "label": "Interests",
+      "noAvailable": "No interests available right now.",
+      "error": "Failed to load interests.",
+      "retry": "Retry"
+    },
+    "edit": {
+      "title": "Edit profile",
+      "description": "Update your bio, avatar, city and interests.",
+      "viewProfile": "View profile",
+      "sections": {
+        "personal": "Personal information",
+        "avatar": "Avatar",
+        "about": "About me",
+        "location": "Location",
+        "interests": "Interests"
+      },
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "birthDate": "Date of birth",
+        "bio": "Bio",
+        "city": "City",
+        "avatar": "Avatar"
+      },
+      "identityNote": "Your name and date of birth come from your verified identity and cannot be edited here.",
+      "bioPlaceholder": "Tell people a little about yourself...",
+      "avatarPlaceholder": "https://example.com/avatar.jpg",
+      "cityPlaceholder": "Select your city",
+      "noCity": "No city",
+      "bioTooLong": "Bio must be 500 characters or fewer.",
+      "avatarInvalid": "Please enter a valid URL.",
+      "saving": "Saving...",
+      "save": "Save",
+      "cancel": "Cancel",
+      "savingInterests": "Saving interests...",
+      "toasts": {
+        "updated": "Profile updated successfully",
+        "interestAdded": "Interest added",
+        "interestRemoved": "Interest removed"
+      },
+      "errors": {
+        "load": "Failed to load your profile.",
+        "update": "Failed to update profile",
+        "city": "Failed to load cities.",
+        "addInterest": "Failed to add interest",
+        "removeInterest": "Failed to remove interest"
+      }
+    }
   }
 }

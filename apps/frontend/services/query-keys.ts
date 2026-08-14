@@ -6,6 +6,7 @@ export const queryKeys = {
   },
   profiles: {
     all: ["profiles"] as const,
+    me: ["profiles", "me"] as const,
     detail: (id: string) => ["profiles", id] as const,
     byUserId: (userId: string) => ["profiles", "user", userId] as const,
   },

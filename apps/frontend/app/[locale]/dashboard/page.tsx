@@ -93,7 +93,7 @@ export default async function DashboardPage({
             </CardHeader>
             <CardContent>
               <Link
-                href="/groups"
+                href="/profile"
                 className={buttonVariants({ variant: "outline", size: "sm" })}
               >
                 {t("cards.profile.action")}

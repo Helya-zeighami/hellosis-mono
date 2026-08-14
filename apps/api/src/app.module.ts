@@ -9,6 +9,7 @@ import { ProfileModule } from './profile/profile.module.js';
 
 import { ConfigModule } from '@nestjs/config';
 import { InterestModule } from './intereset/interest.module.js';
+import { CitiesModule } from './cities/cities.module.js';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { InterestModule } from './intereset/interest.module.js';
     PrismaModule,
     AuthModule,
     ProfileModule,
-    InterestModule
+    InterestModule,
+    CitiesModule,
   ],
 
   controllers: [
