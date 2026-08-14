@@ -8,6 +8,7 @@
     "heading": "Meet women who share your world",
     "subheading": "Join interest-based groups, chat in trusted circles, attend events and discover community-approved places — all in a safe space built for real connections.",
     "createAccount": "Create account",
+    "login": "Log in",
     "explore": "Explore groups",
     "trust": "Verified identity",
     "trustDetail": "Every member is verified for your safety",
@@ -46,5 +47,69 @@
     "label": "Language",
     "en": "English",
     "fa": "فارسی"
+  },
+  "signup": {
+    "title": "Create your account",
+    "description": "Enter your phone number and we'll text you a code to verify it's you.",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "+1 555 123 4567",
+    "phoneRequired": "Enter your phone number.",
+    "phoneInvalid": "Please enter a valid phone number.",
+    "submit": "Send code",
+    "submitting": "Sending...",
+    "otpTitle": "Check your phone",
+    "otpDescription": "We sent a 6-digit code to {phone}. It expires in 5 minutes.",
+    "otpDevLabel": "Development code",
+    "otpHint": "This code is shown for development only and won't appear in production.",
+    "continueToLogin": "Continue to login",
+    "back": "Use a different number",
+    "errors": {
+      "conflict": "An account with this number already exists. You'll be redirected to login.",
+      "rateLimit": "Please wait a moment before requesting another code.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "login": {
+    "title": "Welcome back",
+    "description": "Enter your phone number and the code we sent to verify it's you.",
+    "loading": "Loading...",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "+1 555 123 4567",
+    "phoneRequired": "Enter your phone number.",
+    "phoneInvalid": "Please enter a valid phone number.",
+    "otpLabel": "Verification code",
+    "otpPlaceholder": "6-digit code",
+    "otpInvalid": "Enter the 6-digit code.",
+    "submit": "Log in",
+    "submitting": "Logging in...",
+    "success": "You're logged in!",
+    "noCodeHint": "Don't have a code?",
+    "noCodeLink": "Request one via signup",
+    "errors": {
+      "invalidOtp": "Invalid or expired code. Please request a new one.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "verified": "Verified identity",
+    "logout": "Log out",
+    "cards": {
+      "profile": {
+        "title": "Your profile",
+        "description": "Add your name, photo and interests.",
+        "action": "Set up profile"
+      },
+      "groups": {
+        "title": "Explore groups",
+        "description": "Discover communities around your interests.",
+        "action": "Browse groups"
+      },
+      "events": {
+        "title": "Upcoming events",
+        "description": "Find events happening near you.",
+        "action": "See events"
+      }
+    }
   }
 }

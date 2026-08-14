@@ -1,7 +1,9 @@
 
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+    output   = "../generated/prisma"
+
 }
 
 datasource db {
@@ -33,25 +35,19 @@ enum ReportStatus {
 // =====================
 
 model User {
-  id           String   @id @default(uuid())
+  id          String   @id @default(uuid())
+  phoneNumber String   @unique
+  isVerified  Boolean  @default(false)
 
-  username     String   @unique
-  passwordHash String
-
-  mobile       String   @unique
-
-  nationalCode String   @unique
-
-  isVerified   Boolean  @default(false)
-
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   profile Profile?
 
   interests UserInterest[]
 
-  createdGroups    Group[]       @relation("GroupCreator")
+  createdGroups Group[] @relation("GroupCreator")
+
   groupMemberships GroupMember[]
 
   sentMessages     Message[] @relation("MessageSender")
@@ -65,8 +61,70 @@ model User {
   reportsReceived Report[] @relation("ReportedUser")
 
   notifications Notification[]
+    sessions Session[]
+
 
   @@map("users")
+}
+
+// =====================
+// OTP CODE
+// =====================
+
+model OtpChallenge {
+  id String @id @default(uuid())
+
+  phoneNumber String
+
+  codeHash String
+
+  expiresAt DateTime
+
+  attempts Int @default(0)
+
+  consumedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([phoneNumber])
+  @@index([expiresAt])
+
+  @@map("otp_challenges")
+}
+
+// =====================
+// SESSION
+// =====================
+
+model Session {
+  id String @id @default(uuid())
+
+
+  userId String
+
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+
+
+  refreshTokenHash String
+
+
+  expiresAt DateTime
+
+  revokedAt DateTime?
+
+
+  ipAddress String?
+  userAgent String?
+
+
+  createdAt DateTime @default(now())
+
+
+  @@index([userId])
+  @@index([expiresAt])
+
+
+  @@map("sessions")
 }
 
 // =====================

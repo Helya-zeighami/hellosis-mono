@@ -60,6 +60,12 @@ export default async function HomePage({
         <div className="flex items-center gap-3">
           <LocaleSwitcher />
           <Link
+            href="/login"
+            className={buttonVariants({ variant: "outline", size: "sm" })}
+          >
+            {t("login")}
+          </Link>
+          <Link
             href="/signup"
             className={buttonVariants({ variant: "default", size: "sm" })}
           >
