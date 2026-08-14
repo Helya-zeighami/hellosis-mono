@@ -44,7 +44,6 @@ model User {
 
   profile Profile?
 
-  interests UserInterest[]
 
   createdGroups Group[] @relation("GroupCreator")
 
@@ -137,6 +136,7 @@ model Profile {
   userId String @unique
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  interests UserInterest[]
 
   firstName String?
   lastName  String?
@@ -210,15 +210,15 @@ model Interest {
 
 model UserInterest {
 
-  userId String
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
 
   interestId String
   interest   Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
 
 
-  @@id([userId, interestId])
+  @@id([profileId, interestId])
 
 
   @@map("user_interests")

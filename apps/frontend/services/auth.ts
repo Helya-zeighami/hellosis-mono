@@ -32,3 +32,14 @@ export interface LoginData {
 export function login(phoneNumber: string, otp: string) {
   return http.post<LoginResponse>("/auth/login", { phoneNumber, otp })
 }
+
+export interface LogoutResponse {
+  success: boolean
+  message: string
+  data: null
+  error: { code: string; details?: unknown } | null
+}
+
+export function logout(refreshToken: string) {
+  return http.post<LogoutResponse>("/auth/logout", { refreshToken })
+}

@@ -1,14 +1,7 @@
-import {
-  ConflictException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { createHash, randomInt } from 'node:crypto';
 
 import { PrismaService } from '../prisma/prisma.service.js';
-import { SignupDto } from './dto/signup.dto.js';
 import { successResponse } from '../common/utils/api-response.util.js';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto.js';
@@ -20,45 +13,115 @@ export class AuthService {
     private readonly jwt: JwtService,
   ) {}
 
-  async signup(dto: SignupDto) {
-    const phoneNumber = dto.phoneNumber;
+  async login(dto: LoginDto) {
+    const { phoneNumber, otp } = dto;
 
-    const existingUser = await this.prisma.user.findUnique({
+    let user = await this.prisma.user.findUnique({
       where: {
         phoneNumber,
       },
     });
 
-    if (existingUser) {
-      throw new ConflictException('Unable to create account');
+    /*
+      STEP 1:
+      User enters phone number
+    */
+    if (!otp) {
+      // create user if doesn't exist
+      if (!user) {
+        user = await this.prisma.user.create({
+          data: {
+            phoneNumber,
+            isVerified: false,
+             profile:{
+            create:{}
+          }
+          },
+         
+        });
+      }
+
+      const code = randomInt(100000, 1000000).toString();
+
+      const codeHash = createHash('sha256').update(code).digest('hex');
+
+      await this.prisma.otpChallenge.create({
+        data: {
+          phoneNumber,
+          codeHash,
+          expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+        },
+      });
+
+      return successResponse('OTP sent successfully', {
+        developmentOtp: code,
+      });
     }
 
-    const otp = randomInt(100000, 1000000).toString();
+    /*
+      STEP 2:
+      Verify OTP
+    */
 
-    const codeHash = createHash('sha256').update(otp).digest('hex');
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
 
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
-
-    await this.prisma.user.create({
-      data: {
+    const challenge = await this.prisma.otpChallenge.findFirst({
+      where: {
         phoneNumber,
-        isVerified: false,
+        consumedAt: null,
+        expiresAt: {
+          gt: new Date(),
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
 
-    await this.prisma.otpChallenge.create({
+    if (!challenge) {
+      throw new UnauthorizedException('OTP expired');
+    }
+
+    const otpHash = createHash('sha256').update(otp).digest('hex');
+
+    if (otpHash !== challenge.codeHash) {
+      throw new UnauthorizedException('Invalid OTP');
+    }
+
+    await this.prisma.otpChallenge.update({
+      where: {
+        id: challenge.id,
+      },
       data: {
-        phoneNumber,
-        codeHash,
-        expiresAt,
+        consumedAt: new Date(),
       },
     });
 
-    return successResponse('OTP generated successfully', {
-      expiresAt,
-      developmentOtp: otp,
+    // mark verified
+    if (!user.isVerified) {
+      user = await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          isVerified: true,
+        },
+      });
+    }
+
+    const tokens = await this.generateTokens(user.id);
+
+    return successResponse('Login successful', {
+      user: {
+        id: user.id,
+        phoneNumber: user.phoneNumber,
+      },
+      ...tokens,
     });
   }
+
   private async generateTokens(userId: string) {
     const payload = {
       sub: userId,
@@ -77,9 +140,7 @@ export class AuthService {
     await this.prisma.session.create({
       data: {
         userId,
-
         refreshTokenHash,
-
         expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       },
     });
@@ -89,64 +150,26 @@ export class AuthService {
       refreshToken,
     };
   }
-  async login(dto: LoginDto) {
-    const { phoneNumber, otp } = dto;
 
-    const user = await this.prisma.user.findUnique({
+  async logout(refreshToken: string) {
+    const refreshTokenHash = createHash('sha256').update(refreshToken).digest('hex');
+
+    const session = await this.prisma.session.findFirst({
       where: {
-        phoneNumber,
+        refreshTokenHash,
       },
     });
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+    if (!session) {
+      return successResponse('Already logged out', null);
     }
 
-    const challenge = await this.prisma.otpChallenge.findFirst({
+    await this.prisma.session.delete({
       where: {
-        phoneNumber,
-
-        consumedAt: null,
-
-        expiresAt: {
-          gt: new Date(),
-        },
-      },
-
-      orderBy: {
-        createdAt: 'desc',
+        id: session.id,
       },
     });
 
-    if (!challenge) {
-      throw new UnauthorizedException('Invalid OTP');
-    }
-
-    const otpHash = createHash('sha256').update(otp).digest('hex');
-
-    if (otpHash !== challenge.codeHash) {
-      throw new UnauthorizedException('Invalid OTP');
-    }
-
-    await this.prisma.otpChallenge.update({
-      where: {
-        id: challenge.id,
-      },
-
-      data: {
-        consumedAt: new Date(),
-      },
-    });
-
-    const tokens = await this.generateTokens(user.id);
-
-    return successResponse('Login successful', {
-      user: {
-        id: user.id,
-        phoneNumber: user.phoneNumber,
-      },
-
-      ...tokens,
-    });
+    return successResponse('Logout successful', null);
   }
 }
