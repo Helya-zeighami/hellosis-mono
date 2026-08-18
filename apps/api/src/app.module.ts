@@ -10,6 +10,7 @@ import { ProfileModule } from './profile/profile.module.js';
 import { ConfigModule } from '@nestjs/config';
 import { InterestModule } from './intereset/interest.module.js';
 import { CitiesModule } from './cities/cities.module.js';
+import { MatchModule } from './match/match.module.js';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CitiesModule } from './cities/cities.module.js';
     ProfileModule,
     InterestModule,
     CitiesModule,
+    MatchModule,
   ],
 
   controllers: [

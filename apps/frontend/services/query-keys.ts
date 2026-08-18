@@ -31,6 +31,12 @@ export const queryKeys = {
     conversation: (userId: string) => ["messages", "conversation", userId] as const,
     detail: (id: string) => ["messages", id] as const,
   },
+  matches: {
+    all: ["matches"] as const,
+    recommendations: ["matches", "recommendations"] as const,
+    requests: ["matches", "requests"] as const,
+    detail: (id: string) => ["matches", id] as const,
+  },
   events: {
     all: ["events"] as const,
     detail: (id: string) => ["events", id] as const,

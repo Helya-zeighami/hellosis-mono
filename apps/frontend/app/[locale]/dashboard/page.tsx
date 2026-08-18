@@ -102,6 +102,22 @@ export default async function DashboardPage({
           </Card>
           <Card>
             <CardHeader>
+              <CardTitle>{t("cards.discover.title")}</CardTitle>
+              <CardDescription>
+                {t("cards.discover.description")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link
+                href="/discover"
+                className={buttonVariants({ variant: "outline", size: "sm" })}
+              >
+                {t("cards.discover.action")}
+              </Link>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
               <CardTitle>{t("cards.groups.title")}</CardTitle>
               <CardDescription>
                 {t("cards.groups.description")}

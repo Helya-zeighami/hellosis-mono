@@ -90,6 +90,14 @@
       "generic": "Something went wrong. Please try again."
     }
   },
+  "common": {
+    "errors": {
+      "unauthorized": "Please login again",
+      "rateLimited": "Too many requests",
+      "server": "Something went wrong",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
   "dashboard": {
     "welcome": "Welcome back",
     "verified": "Verified identity",
@@ -99,6 +107,11 @@
         "title": "Your profile",
         "description": "Add your name, photo and interests.",
         "action": "Set up profile"
+      },
+      "discover": {
+        "title": "Discover people",
+        "description": "Meet people who share your interests.",
+        "action": "Start exploring"
       },
       "groups": {
         "title": "Explore groups",
@@ -110,6 +123,63 @@
         "description": "Find events happening near you.",
         "action": "See events"
       }
+    }
+  },
+  "discover": {
+    "title": "Discover",
+    "description": "Find people who share your interests and city.",
+    "requestsLink": "Match requests",
+    "retry": "Retry",
+    "errors": {
+      "load": "Failed to load recommendations."
+    },
+    "empty": {
+      "title": "No new people to discover",
+      "description": "Try adding more interests to your profile.",
+      "action": "Update profile"
+    }
+  },
+  "matches": {
+    "title": "Match requests",
+    "description": "People who sent you a match request.",
+    "discoverLink": "Discover",
+    "retry": "Retry",
+    "errors": {
+      "load": "Failed to load match requests."
+    },
+    "empty": {
+      "title": "No match requests right now",
+      "description": "Keep exploring new people.",
+      "action": "Discover"
+    }
+  },
+  "matching": {
+    "compatibility": {
+      "label": "Compatibility"
+    },
+    "card": {
+      "noName": "Unnamed",
+      "noCity": "No city",
+      "sameCity": "Same city",
+      "sharedCount": "{count, plural, =0 {No shared interests} one {# shared interest} other {# shared interests}}"
+    },
+    "actions": {
+      "send": "Send request",
+      "sent": "Match request sent",
+      "sentLabel": "Request sent",
+      "matchedLabel": "Matched",
+      "respond": "Respond to request",
+      "viewProfile": "View profile"
+    },
+    "requests": {
+      "noName": "Unnamed",
+      "noCity": "No city",
+      "receivedAt": "Sent {time}",
+      "sharedCount": "{count, plural, =0 {No shared interests} one {# shared interest} other {# shared interests}}",
+      "accept": "Accept",
+      "reject": "Reject",
+      "accepted": "Match accepted",
+      "rejected": "Match rejected"
     }
   },
   "profile": {
@@ -129,6 +199,19 @@
       "noAvailable": "No interests available right now.",
       "error": "Failed to load interests.",
       "retry": "Retry"
+    },
+    "detail": {
+      "backToDiscover": "Back to discover",
+      "sameCity": "Same city",
+      "about": "About me",
+      "noName": "Unnamed",
+      "noBio": "No bio yet.",
+      "interestsTitle": "Interests",
+      "noInterests": "No interests added yet.",
+      "retry": "Retry",
+      "errors": {
+        "load": "Failed to load this profile."
+      }
     },
     "edit": {
       "title": "Edit profile",

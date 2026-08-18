@@ -20,7 +20,7 @@ export function useLogin() {
   return useMutation<
     LoginResponse,
     HttpError,
-    { phoneNumber: string; otp: string }
+    { phoneNumber: string; otp?: string }
   >({
     mutationFn: ({ phoneNumber, otp }) => login(phoneNumber, otp),
   })

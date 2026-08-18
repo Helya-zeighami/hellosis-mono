@@ -24,12 +24,13 @@ export interface LoginResponse {
 }
 
 export interface LoginData {
-  user: { id: string; phoneNumber: string }
-  accessToken: string
-  refreshToken: string
+  user?: { id: string; phoneNumber: string }
+  accessToken?: string
+  refreshToken?: string
+  developmentOtp?: string
 }
 
-export function login(phoneNumber: string, otp: string) {
+export function login(phoneNumber: string, otp?: string) {
   return http.post<LoginResponse>("/auth/login", { phoneNumber, otp })
 }
 

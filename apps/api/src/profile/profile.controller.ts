@@ -3,13 +3,9 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard.js"
 import { UpdateProfileDto } from "./dto/update-profile.dto.js"
 import { AddInterestDto } from "./dto/add-interest.dto.js"
 import { ProfileService } from "./profile.service.js"
+import type { AuthenticationRequest } from "../common/interfaces/authentication-request.interface.js"
 
 
-interface AuthenticationRequest extends Request{
-    user:{
-        id:string
-    }
-}
 
 @Controller('profile')
 @UseGuards(JwtAuthGuard)
@@ -20,6 +16,11 @@ export class ProfileController{
     @Get()
     async getProfile(@Req() req:AuthenticationRequest){
        return this.profileService.getProfile(req.user.id)
+    }
+
+    @Get(':id')
+    async getPublicProfile(@Req() req:AuthenticationRequest,@Param('id') id: string){
+       return this.profileService.getPublicProfile(id, req.user.id)
     }
 
     @Patch()

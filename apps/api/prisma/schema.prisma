@@ -28,6 +28,12 @@ enum ReportStatus {
   REJECTED
 }
 
+enum MatchStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 
 
 // =====================
@@ -51,6 +57,9 @@ model User {
 
   sentMessages     Message[] @relation("MessageSender")
   receivedMessages Message[] @relation("MessageReceiver")
+
+  sentMatches     Match[] @relation("MatchSender")
+  receivedMatches Match[] @relation("MatchRecipient")
 
   createdEvents Event[] @relation("EventCreator")
 
@@ -449,6 +458,34 @@ model Report {
 
 
   @@map("reports")
+}
+
+
+// =====================
+// MATCH
+// =====================
+
+model Match {
+  id String @id @default(uuid())
+
+  senderId String
+  sender   User @relation("MatchSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  recipientId String
+  recipient   User @relation("MatchRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  status MatchStatus @default(PENDING)
+
+  respondedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([senderId, recipientId])
+  @@index([recipientId, status])
+  @@index([senderId, status])
+
+  @@map("matches")
 }
 
 

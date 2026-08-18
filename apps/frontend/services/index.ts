@@ -17,3 +17,17 @@ export {
   type City,
   type UpdateProfileInput,
 } from "./profile"
+export {
+  getRecommendations,
+  getPublicProfile,
+  sendMatchRequest,
+  getMatchRequests,
+  acceptMatchRequest,
+  rejectMatchRequest,
+  type Match,
+  type MatchStatus,
+  type MatchRelationship,
+  type MatchRequest,
+  type Recommendation,
+  type PublicProfile,
+} from "./matches"

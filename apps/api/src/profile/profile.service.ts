@@ -8,7 +8,9 @@ import { PrismaService } from '../prisma/prisma.service.js';
 
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
 
+import { MatchStatus } from '../../generated/prisma/client.js';
 import { successResponse } from '../common/utils/api-response.util.js';
+import { computeMatchScore } from '../common/utils/match-score.util.js';
 
 @Injectable()
 export class ProfileService {
@@ -63,6 +65,137 @@ export class ProfileService {
             name: userInterest.interest.name,
           }),
         ),
+      },
+    );
+  }
+
+  // =========================
+  // GET PUBLIC PROFILE
+  // =========================
+
+  async getPublicProfile(profileId: string, viewerId: string) {
+    const viewerProfile =
+      await this.prisma.profile.findUnique({
+        where: {
+          userId: viewerId,
+        },
+        select: {
+          cityId: true,
+          interests: {
+            select: {
+              interestId: true,
+            },
+          },
+        },
+      });
+
+    const profile = await this.prisma.profile.findUnique({
+      where: {
+        id: profileId,
+      },
+      include: {
+        city: true,
+        interests: {
+          include: {
+            interest: true,
+          },
+        },
+      },
+    });
+
+    if (!profile) {
+      throw new NotFoundException(
+        'Profile not found',
+      );
+    }
+
+    const viewerInterestIds = new Set(
+      viewerProfile?.interests.map(
+        (userInterest) => userInterest.interestId,
+      ) ?? [],
+    );
+
+    const sharedInterests = profile.interests
+      .filter((userInterest) =>
+        viewerInterestIds.has(userInterest.interestId),
+      )
+      .map((userInterest) => ({
+        id: userInterest.interest.id,
+        name: userInterest.interest.name,
+      }));
+
+    const sameCity =
+      viewerProfile?.cityId !== null &&
+      viewerProfile?.cityId !== undefined &&
+      viewerProfile.cityId === profile.cityId;
+
+    const score = computeMatchScore({
+      currentInterestCount: viewerProfile?.interests.length ?? 0,
+      otherInterestCount: profile.interests.length,
+      sharedInterestCount: sharedInterests.length,
+      sameCity,
+    });
+
+    const match = await this.prisma.match.findFirst({
+      where: {
+        OR: [
+          { senderId: viewerId, recipientId: profile.userId },
+          { senderId: profile.userId, recipientId: viewerId },
+        ],
+      },
+      select: {
+        id: true,
+        senderId: true,
+        status: true,
+      },
+    });
+
+    let matchStatus:
+      | 'SENT'
+      | 'RECEIVED'
+      | 'ACCEPTED'
+      | 'REJECTED'
+      | null = null;
+
+    if (match) {
+      if (match.status === MatchStatus.ACCEPTED) {
+        matchStatus = 'ACCEPTED';
+      } else if (match.status === MatchStatus.REJECTED) {
+        matchStatus = 'REJECTED';
+      } else {
+        matchStatus =
+          match.senderId === viewerId ? 'SENT' : 'RECEIVED';
+      }
+    }
+
+    return successResponse(
+      'Profile retrieved successfully',
+      {
+        id: profile.id,
+        userId: profile.userId,
+
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        birthDate: profile.birthDate,
+
+        bio: profile.bio,
+        avatarUrl: profile.avatarUrl,
+
+        city: profile.city,
+
+        interests: profile.interests.map(
+          (userInterest) => ({
+            id: userInterest.interest.id,
+            name: userInterest.interest.name,
+          }),
+        ),
+
+        sharedInterests,
+        sameCity,
+        compatibility: Math.round(score * 100),
+
+        matchId: match?.id ?? null,
+        matchStatus,
       },
     );
   }
