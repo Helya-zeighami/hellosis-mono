@@ -11,6 +11,8 @@ import { ConfigModule } from '@nestjs/config';
 import { InterestModule } from './intereset/interest.module.js';
 import { CitiesModule } from './cities/cities.module.js';
 import { MatchModule } from './match/match.module.js';
+import { GroupsModule } from './groups/groups.module.js';
+import { EventsModule } from './events/events.module.js';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { MatchModule } from './match/match.module.js';
     InterestModule,
     CitiesModule,
     MatchModule,
+    GroupsModule,
+    EventsModule,
   ],
 
   controllers: [

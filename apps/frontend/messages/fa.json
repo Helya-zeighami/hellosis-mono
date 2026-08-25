@@ -125,6 +125,173 @@
       }
     }
   },
+  "events": {
+    "title": "رویدادها",
+    "description": "رویدادهایی را که در نزدیکی شما برگزار می‌شوند کشف و شرکت کنید.",
+    "retry": "تلاش مجدد",
+    "loadMore": "بارگذاری بیشتر",
+    "createEvent": "ایجاد رویداد",
+    "backToEvents": "بازگشت به رویدادها",
+    "backToEvent": "بازگشت به رویداد",
+    "errors": {
+      "load": "دریافت رویدادها ناموفق بود.",
+      "create": "ایجاد رویداد ناموفق بود.",
+      "update": "به‌روزرسانی رویداد ناموفق بود.",
+      "delete": "حذف رویداد ناموفق بود."
+    },
+    "toasts": {
+      "created": "رویداد با موفقیت ایجاد شد",
+      "updated": "رویداد با موفقیت به‌روزرسانی شد",
+      "deleted": "رویداد با موفقیت حذف شد"
+    },
+    "empty": {
+      "title": "هنوز رویدادی وجود ندارد",
+      "description": "اولین نفری باشید که در جامعه خود رویدادی ایجاد می‌کند.",
+      "action": "ایجاد رویداد"
+    },
+    "filters": {
+      "searchPlaceholder": "جستجوی رویدادها...",
+      "allCities": "همه شهرها",
+      "searchCitiesPlaceholder": "جستجوی شهر...",
+      "typeToSearch": "برای جستجو تایپ کنید",
+      "noResults": "شهری یافت نشد",
+      "clearCity": "پاک کردن شهر"
+    },
+    "card": {
+      "noCreator": "نامشخص",
+      "createdBy": "ایجاد شده توسط {name}",
+      "view": "مشاهده رویداد"
+    },
+    "detail": {
+      "edit": "ویرایش",
+      "delete": "حذف رویداد",
+      "noCreator": "نامشخص",
+      "createdBy": "ایجاد شده توسط {name}",
+      "retry": "تلاش مجدد",
+      "errors": {
+        "load": "دریافت این رویداد ناموفق بود.",
+        "delete": "حذف رویداد ناموفق بود."
+      },
+      "toasts": {
+        "deleted": "رویداد با موفقیت حذف شد"
+      }
+    },
+    "form": {
+      "titleLabel": "عنوان رویداد",
+      "titlePlaceholder": "مثلاً جلسه کتابخوانی",
+      "descriptionLabel": "توضیحات",
+      "descriptionPlaceholder": "این رویداد درباره چیست؟",
+      "startTimeLabel": "زمان شروع",
+      "endTimeLabel": "زمان پایان (اختیاری)",
+      "cityLabel": "شهر",
+      "cityPlaceholder": "شهر خود را انتخاب کنید",
+      "citySearchPlaceholder": "جستجوی شهر...",
+      "cityTypeToSearch": "برای جستجو تایپ کنید",
+      "cityNoResults": "شهری یافت نشد",
+      "clearCity": "پاک کردن شهر",
+      "create": "ایجاد رویداد",
+      "save": "ذخیره تغییرات"
+    },
+    "comments": {
+      "title": "{count, plural, =0 {بدون نظر} one {# نظر} other {# نظر}}",
+      "placeholder": "نظر خود را بنویسید...",
+      "submit": "ارسال",
+      "empty": "هنوز نظری وجود ندارد. اولین نفری باشید که نظر می‌دهد.",
+      "unknownUser": "نامشخص"
+    },
+    "reactions": {},
+    "createPage": {
+      "title": "ایجاد رویداد",
+      "description": "یک رویداد جدید برای جامعه خود سازماندهی کنید."
+    },
+    "editPage": {
+      "title": "ویرایش رویداد",
+      "description": "جزئیات رویداد خود را به‌روزرسانی کنید."
+    }
+  },
+  "groups": {
+    "title": "گروه‌ها",
+    "description": "جوامعی را حول علایق مشترک کشف کنید و به آن‌ها بپیوندید.",
+    "retry": "تلاش مجدد",
+    "loadMore": "بارگذاری بیشتر",
+    "createGroup": "ایجاد گروه",
+    "backToGroups": "بازگشت به گروه‌ها",
+    "backToGroup": "بازگشت به گروه",
+    "errors": {
+      "load": "دریافت گروه‌ها ناموفق بود.",
+      "create": "ایجاد گروه ناموفق بود.",
+      "update": "به‌روزرسانی گروه ناموفق بود."
+    },
+    "toasts": {
+      "created": "گروه با موفقیت ایجاد شد",
+      "updated": "گروه با موفقیت به‌روزرسانی شد"
+    },
+    "empty": {
+      "title": "هنوز گروهی وجود ندارد",
+      "description": "اولین نفری باشید که یک جامعه ایجاد می‌کند.",
+      "action": "ایجاد گروه"
+    },
+    "filters": {
+      "searchPlaceholder": "جستجوی گروه‌ها...",
+      "allCities": "همه شهرها",
+      "searchCitiesPlaceholder": "جستجوی شهر...",
+      "typeToSearch": "برای جستجو تایپ کنید",
+      "noResults": "شهری یافت نشد",
+      "clearCity": "پاک کردن شهر"
+    },
+    "card": {
+      "noCreator": "نامشخص",
+      "memberCount": "{count, plural, =0 {بدون عضو} other {# عضو}}",
+      "createdBy": "ایجاد شده توسط {name}",
+      "view": "مشاهده گروه"
+    },
+    "members": {
+      "unknown": "نامشخص",
+      "owner": "مالک",
+      "admin": "مدیر",
+      "member": "عضو"
+    },
+    "detail": {
+      "edit": "ویرایش",
+      "join": "عضویت در گروه",
+      "leave": "خروج از گروه",
+      "ownerNotice": "شما مالک این گروه هستید",
+      "leaveConfirmTitle": "از این گروه خارج شوید؟",
+      "leaveConfirmDescription": "همیشه می‌توانید دوباره عضو شوید.",
+      "confirmLeave": "خروج از گروه",
+      "cancel": "انصراف",
+      "noCreator": "نامشخص",
+      "membersTitle": "{count, plural, =0 {بدون عضو} other {# عضو}}",
+      "retry": "تلاش مجدد",
+      "errors": {
+        "load": "دریافت این گروه ناموفق بود."
+      }
+    },
+    "form": {
+      "nameLabel": "نام گروه",
+      "namePlaceholder": "مثلاً دوستداران کتاب تهران",
+      "descriptionLabel": "توضیحات",
+      "descriptionPlaceholder": "این گروه درباره چیست؟",
+      "imageLabel": "آدرس تصویر کاور",
+      "imagePlaceholder": "https://example.com/image.jpg",
+      "cityLabel": "شهر",
+      "cityPlaceholder": "شهر خود را انتخاب کنید",
+      "citySearchPlaceholder": "جستجوی شهر...",
+      "cityTypeToSearch": "برای جستجو تایپ کنید",
+      "cityNoResults": "شهری یافت نشد",
+      "clearCity": "پاک کردن شهر",
+      "create": "ایجاد گروه",
+      "save": "ذخیره تغییرات"
+    },
+    "createPage": {
+      "title": "ایجاد گروه",
+      "description": "یک جامعه جدید حول علایق مشترک ایجاد کنید."
+    },
+    "editPage": {
+      "title": "ویرایش گروه",
+      "description": "جزئیات گروه خود را به‌روزرسانی کنید."
+    }
+  },
   "discover": {
     "title": "کشف",
     "description": "افرادی را بیابید که علایق و شهر شما را به اشتراک می‌گذارند.",

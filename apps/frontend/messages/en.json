@@ -125,6 +125,173 @@
       }
     }
   },
+  "events": {
+    "title": "Events",
+    "description": "Discover and attend events happening near you.",
+    "retry": "Retry",
+    "loadMore": "Load more",
+    "createEvent": "Create event",
+    "backToEvents": "Back to events",
+    "backToEvent": "Back to event",
+    "errors": {
+      "load": "Failed to load events.",
+      "create": "Failed to create event.",
+      "update": "Failed to update event.",
+      "delete": "Failed to delete event."
+    },
+    "toasts": {
+      "created": "Event created successfully",
+      "updated": "Event updated successfully",
+      "deleted": "Event deleted successfully"
+    },
+    "empty": {
+      "title": "No events yet",
+      "description": "Be the first to create an event in your community.",
+      "action": "Create an event"
+    },
+    "filters": {
+      "searchPlaceholder": "Search events...",
+      "allCities": "All cities",
+      "searchCitiesPlaceholder": "Search cities...",
+      "typeToSearch": "Type to search cities",
+      "noResults": "No cities found",
+      "clearCity": "Clear city"
+    },
+    "card": {
+      "noCreator": "Unknown",
+      "createdBy": "Created by {name}",
+      "view": "View event"
+    },
+    "detail": {
+      "edit": "Edit",
+      "delete": "Delete event",
+      "noCreator": "Unknown",
+      "createdBy": "Created by {name}",
+      "retry": "Retry",
+      "errors": {
+        "load": "Failed to load this event.",
+        "delete": "Failed to delete event."
+      },
+      "toasts": {
+        "deleted": "Event deleted successfully"
+      }
+    },
+    "form": {
+      "titleLabel": "Event title",
+      "titlePlaceholder": "e.g. Book Club Meetup",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "What is this event about?",
+      "startTimeLabel": "Start time",
+      "endTimeLabel": "End time (optional)",
+      "cityLabel": "City",
+      "cityPlaceholder": "Select a city",
+      "citySearchPlaceholder": "Search cities...",
+      "cityTypeToSearch": "Type to search cities",
+      "cityNoResults": "No cities found",
+      "clearCity": "Clear city",
+      "create": "Create event",
+      "save": "Save changes"
+    },
+    "comments": {
+      "title": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
+      "placeholder": "Write a comment...",
+      "submit": "Post",
+      "empty": "No comments yet. Be the first to comment.",
+      "unknownUser": "Unknown"
+    },
+    "reactions": {},
+    "createPage": {
+      "title": "Create an event",
+      "description": "Organize a new event for your community."
+    },
+    "editPage": {
+      "title": "Edit event",
+      "description": "Update your event details."
+    }
+  },
+  "groups": {
+    "title": "Groups",
+    "description": "Discover and join communities around shared interests.",
+    "retry": "Retry",
+    "loadMore": "Load more",
+    "createGroup": "Create group",
+    "backToGroups": "Back to groups",
+    "backToGroup": "Back to group",
+    "errors": {
+      "load": "Failed to load groups.",
+      "create": "Failed to create group.",
+      "update": "Failed to update group."
+    },
+    "toasts": {
+      "created": "Group created successfully",
+      "updated": "Group updated successfully"
+    },
+    "empty": {
+      "title": "No groups yet",
+      "description": "Be the first to create a community.",
+      "action": "Create a group"
+    },
+    "filters": {
+      "searchPlaceholder": "Search groups...",
+      "allCities": "All cities",
+      "searchCitiesPlaceholder": "Search cities...",
+      "typeToSearch": "Type to search cities",
+      "noResults": "No cities found",
+      "clearCity": "Clear city"
+    },
+    "card": {
+      "noCreator": "Unknown",
+      "memberCount": "{count, plural, =0 {No members} one {# member} other {# members}}",
+      "createdBy": "Created by {name}",
+      "view": "View group"
+    },
+    "members": {
+      "unknown": "Unknown",
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member"
+    },
+    "detail": {
+      "edit": "Edit",
+      "join": "Join group",
+      "leave": "Leave group",
+      "ownerNotice": "You are the owner",
+      "leaveConfirmTitle": "Leave this group?",
+      "leaveConfirmDescription": "You can always rejoin later.",
+      "confirmLeave": "Leave group",
+      "cancel": "Cancel",
+      "noCreator": "Unknown",
+      "membersTitle": "{count, plural, =0 {No members} one {# member} other {# members}}",
+      "retry": "Retry",
+      "errors": {
+        "load": "Failed to load this group."
+      }
+    },
+    "form": {
+      "nameLabel": "Group name",
+      "namePlaceholder": "e.g. Book Lovers Tehran",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "What is this group about?",
+      "imageLabel": "Cover image URL",
+      "imagePlaceholder": "https://example.com/image.jpg",
+      "cityLabel": "City",
+      "cityPlaceholder": "Select a city",
+      "citySearchPlaceholder": "Search cities...",
+      "cityTypeToSearch": "Type to search cities",
+      "cityNoResults": "No cities found",
+      "clearCity": "Clear city",
+      "create": "Create group",
+      "save": "Save changes"
+    },
+    "createPage": {
+      "title": "Create a group",
+      "description": "Start a new community around shared interests."
+    },
+    "editPage": {
+      "title": "Edit group",
+      "description": "Update your group details."
+    }
+  },
   "discover": {
     "title": "Discover",
     "description": "Find people who share your interests and city.",

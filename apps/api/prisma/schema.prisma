@@ -1,15 +1,11 @@
-
-
 generator client {
   provider = "prisma-client"
-    output   = "../generated/prisma"
-
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
-
 
 // =====================
 // ENUMS
@@ -34,22 +30,19 @@ enum MatchStatus {
   REJECTED
 }
 
-
-
 // =====================
 // USER
 // =====================
 
 model User {
-  id          String   @id @default(uuid())
-  phoneNumber String   @unique
-  isVerified  Boolean  @default(false)
+  id          String  @id @default(uuid())
+  phoneNumber String  @unique
+  isVerified  Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   profile Profile?
-
 
   createdGroups Group[] @relation("GroupCreator")
 
@@ -60,8 +53,13 @@ model User {
 
   sentMatches     Match[] @relation("MatchSender")
   receivedMatches Match[] @relation("MatchRecipient")
+  createdEvents   Event[] @relation("EventCreator")
 
-  createdEvents Event[] @relation("EventCreator")
+  eventLikes EventLike[]
+
+  eventDislikes EventDislike[]
+
+  eventComments EventComment[]
 
   reviews Review[]
 
@@ -69,8 +67,7 @@ model User {
   reportsReceived Report[] @relation("ReportedUser")
 
   notifications Notification[]
-    sessions Session[]
-
+  sessions      Session[]
 
   @@map("users")
 }
@@ -96,7 +93,6 @@ model OtpChallenge {
 
   @@index([phoneNumber])
   @@index([expiresAt])
-
   @@map("otp_challenges")
 }
 
@@ -107,31 +103,23 @@ model OtpChallenge {
 model Session {
   id String @id @default(uuid())
 
-
   userId String
 
-  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
-
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   refreshTokenHash String
-
 
   expiresAt DateTime
 
   revokedAt DateTime?
 
-
   ipAddress String?
   userAgent String?
 
-
   createdAt DateTime @default(now())
-
 
   @@index([userId])
   @@index([expiresAt])
-
-
   @@map("sessions")
 }
 
@@ -143,7 +131,7 @@ model Profile {
   id String @id @default(uuid())
 
   userId String @unique
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   interests UserInterest[]
 
@@ -155,18 +143,14 @@ model Profile {
 
   birthDate DateTime?
 
-
   cityId String?
-  city   City? @relation(fields: [cityId], references: [id])
-
+  city   City?   @relation(fields: [cityId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-
   @@map("profiles")
 }
-
 
 // =====================
 // CITY
@@ -178,20 +162,18 @@ model City {
   name    String
   country String
 
-
   profiles Profile[]
 
   groups Group[]
 
   places Place[]
 
+  events Event[]
 
   createdAt DateTime @default(now())
 
-
   @@map("cities")
 }
-
 
 // =====================
 // INTEREST
@@ -202,264 +184,244 @@ model Interest {
 
   name String @unique
 
-
   users UserInterest[]
-
 
   createdAt DateTime @default(now())
 
-
   @@map("interests")
 }
-
 
 // =====================
 // USER INTEREST
 // =====================
 
 model UserInterest {
-
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-
 
   interestId String
   interest   Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
 
-
   @@id([profileId, interestId])
-
-
   @@map("user_interests")
 }
-
 
 // =====================
 // GROUP
 // =====================
 
 model Group {
-
   id String @id @default(uuid())
 
-
   creatorId String
-  creator   User @relation("GroupCreator", fields: [creatorId], references: [id])
-
+  creator   User   @relation("GroupCreator", fields: [creatorId], references: [id])
 
   cityId String?
-  city   City? @relation(fields: [cityId], references: [id])
-
+  city   City?   @relation(fields: [cityId], references: [id])
 
   name        String
   description String?
   imageUrl    String?
 
-
   members GroupMember[]
-
-
-  events Event[]
-
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-
   @@map("groups")
 }
-
 
 // =====================
 // GROUP MEMBER
 // =====================
 
 model GroupMember {
-
   id String @id @default(uuid())
 
-
   groupId String
-  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
-
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
   userId String
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   role GroupRole @default(MEMBER)
 
-
   joinedAt DateTime @default(now())
 
-
   @@unique([groupId, userId])
-
-
   @@map("group_members")
 }
-
 
 // =====================
 // MESSAGE
 // =====================
 
 model Message {
-
   id String @id @default(uuid())
 
-
   senderId String
-  sender User @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
-
+  sender   User   @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
 
   receiverId String
-  receiver User @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
-
+  receiver   User   @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
 
   content String
 
-
   createdAt DateTime @default(now())
-
 
   @@index([senderId])
   @@index([receiverId])
-
-
   @@map("messages")
 }
-
 
 // =====================
 // EVENT
 // =====================
 
 model Event {
-
   id String @id @default(uuid())
 
-
   creatorId String
-  creator User @relation("EventCreator", fields: [creatorId], references: [id])
+  creator   User   @relation("EventCreator", fields: [creatorId], references: [id])
 
+  cityId String
+  city   City   @relation(fields: [cityId], references: [id])
 
-  groupId String?
-  group Group? @relation(fields: [groupId], references: [id])
-
-
-  placeId String?
-  place Place? @relation(fields: [placeId], references: [id])
-
-
-  title String
-
-  description String?
-
+  title       String
+  description String
 
   startTime DateTime
   endTime   DateTime?
 
+  likes    EventLike[]
+  dislikes EventDislike[]
+  comments EventComment[]
 
   createdAt DateTime @default(now())
 
-
+  @@index([startTime])
+  @@index([cityId])
   @@map("events")
 }
 
+model EventLike {
+  id String @id @default(uuid())
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
+  @@index([userId])
+  @@map("event_likes")
+}
+
+model EventDislike {
+  id String @id @default(uuid())
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
+  @@index([userId])
+  @@map("event_dislikes")
+}
+
+model EventComment {
+  id String @id @default(uuid())
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([eventId])
+  @@index([userId])
+  @@map("event_comments")
+}
 
 // =====================
 // PLACE
 // =====================
 
 model Place {
-
   id String @id @default(uuid())
 
-
   cityId String?
-  city City? @relation(fields: [cityId], references: [id])
-
+  city   City?   @relation(fields: [cityId], references: [id])
 
   name String
 
   address String?
 
-
   latitude  Float?
   longitude Float?
 
-
-  events Event[]
-
   reviews Review[]
-
 
   createdAt DateTime @default(now())
 
-
   @@map("places")
 }
-
 
 // =====================
 // REVIEW
 // =====================
 
 model Review {
-
   id String @id @default(uuid())
 
-
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   placeId String
-  place Place @relation(fields: [placeId], references: [id], onDelete: Cascade)
-
+  place   Place  @relation(fields: [placeId], references: [id], onDelete: Cascade)
 
   rating Int
 
   comment String?
 
-
   createdAt DateTime @default(now())
-
 
   @@map("reviews")
 }
-
 
 // =====================
 // REPORT
 // =====================
 
 model Report {
-
   id String @id @default(uuid())
 
-
   reporterId String
-  reporter User @relation("Reporter", fields: [reporterId], references: [id])
-
+  reporter   User   @relation("Reporter", fields: [reporterId], references: [id])
 
   reportedUserId String
-  reportedUser User @relation("ReportedUser", fields: [reportedUserId], references: [id])
-
+  reportedUser   User   @relation("ReportedUser", fields: [reportedUserId], references: [id])
 
   reason String
 
-
   status ReportStatus @default(PENDING)
-
 
   createdAt DateTime @default(now())
 
-
   @@map("reports")
 }
-
 
 // =====================
 // MATCH
@@ -469,10 +431,10 @@ model Match {
   id String @id @default(uuid())
 
   senderId String
-  sender   User @relation("MatchSender", fields: [senderId], references: [id], onDelete: Cascade)
+  sender   User   @relation("MatchSender", fields: [senderId], references: [id], onDelete: Cascade)
 
   recipientId String
-  recipient   User @relation("MatchRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  recipient   User   @relation("MatchRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
 
   status MatchStatus @default(PENDING)
 
@@ -484,23 +446,18 @@ model Match {
   @@unique([senderId, recipientId])
   @@index([recipientId, status])
   @@index([senderId, status])
-
   @@map("matches")
 }
-
 
 // =====================
 // NOTIFICATION
 // =====================
 
 model Notification {
-
   id String @id @default(uuid())
 
-
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   type String
 
@@ -508,12 +465,8 @@ model Notification {
 
   isRead Boolean @default(false)
 
-
   createdAt DateTime @default(now())
 
-
   @@index([userId, isRead])
-
-
   @@map("notifications")
 }
