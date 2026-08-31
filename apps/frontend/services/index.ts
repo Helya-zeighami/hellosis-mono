@@ -67,3 +67,17 @@ export {
   type CreateEventInput,
   type UpdateEventInput,
 } from "./events"
+export {
+  getPlaces,
+  getPlace,
+  getPlaceCategories,
+  createPlace,
+  updatePlace,
+  deletePlace,
+  type PlaceCategory,
+  type PlaceCreator,
+  type PlaceListItem,
+  type PlaceDetail,
+  type CreatePlaceInput,
+  type UpdatePlaceInput,
+} from "./places"

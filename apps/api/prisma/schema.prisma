@@ -61,6 +61,8 @@ model User {
 
   eventComments EventComment[]
 
+  createdPlaces Place[] @relation("PlaceCreator")
+
   reviews Review[]
 
   reportsSent     Report[] @relation("Reporter")
@@ -356,25 +358,47 @@ model EventComment {
 }
 
 // =====================
+// PLACE CATEGORY
+// =====================
+
+model PlaceCategory {
+  id   String @id @default(uuid())
+  name String @unique
+
+  places Place[]
+
+  createdAt DateTime @default(now())
+
+  @@map("place_categories")
+}
+
+// =====================
 // PLACE
 // =====================
 
 model Place {
   id String @id @default(uuid())
 
+  name        String
+  description String?
+
   cityId String?
   city   City?   @relation(fields: [cityId], references: [id])
 
-  name String
-
   address String?
 
-  latitude  Float?
-  longitude Float?
+  categoryId String?
+  category   PlaceCategory? @relation(fields: [categoryId], references: [id])
+
+  imageUrl String?
+
+  createdById String?
+  createdBy   User?   @relation("PlaceCreator", fields: [createdById], references: [id])
 
   reviews Review[]
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("places")
 }

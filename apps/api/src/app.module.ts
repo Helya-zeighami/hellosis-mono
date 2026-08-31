@@ -13,6 +13,8 @@ import { CitiesModule } from './cities/cities.module.js';
 import { MatchModule } from './match/match.module.js';
 import { GroupsModule } from './groups/groups.module.js';
 import { EventsModule } from './events/events.module.js';
+import { PlacesModule } from './places/places.module.js';
+import { PlaceCategoriesModule } from './place-categories/place-categories.module.js';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { EventsModule } from './events/events.module.js';
     MatchModule,
     GroupsModule,
     EventsModule,
+    PlacesModule,
+    PlaceCategoriesModule,
   ],
 
   controllers: [

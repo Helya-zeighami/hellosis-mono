@@ -209,6 +209,96 @@
       "description": "جزئیات رویداد خود را به‌روزرسانی کنید."
     }
   },
+  "places": {
+    "title": "مکان‌ها",
+    "description": "مکان‌های مورد اعتماد پیشنهادی جامعه را کشف کنید.",
+    "retry": "تلاش مجدد",
+    "loadMore": "بارگذاری بیشتر",
+    "createPlace": "ایجاد مکان",
+    "backToPlaces": "بازگشت به مکان‌ها",
+    "backToPlace": "بازگشت به مکان",
+    "errors": {
+      "load": "دریافت مکان‌ها ناموفق بود.",
+      "create": "ایجاد مکان ناموفق بود.",
+      "update": "به‌روزرسانی مکان ناموفق بود.",
+      "delete": "حذف مکان ناموفق بود."
+    },
+    "toasts": {
+      "created": "مکان با موفقیت ایجاد شد",
+      "updated": "مکان با موفقیت به‌روزرسانی شد",
+      "deleted": "مکان با موفقیت حذف شد"
+    },
+    "empty": {
+      "title": "هنوز مکانی وجود ندارد",
+      "description": "اولین نفری باشید که مکانی را با جامعه به اشتراک می‌گذارد.",
+      "action": "ایجاد مکان"
+    },
+    "filters": {
+      "searchPlaceholder": "جستجوی مکان‌ها...",
+      "allCities": "همه شهرها",
+      "allCategories": "همه دسته‌بندی‌ها",
+      "searchCitiesPlaceholder": "جستجوی شهر...",
+      "typeToSearch": "برای جستجو تایپ کنید",
+      "noResults": "شهری یافت نشد",
+      "clearCity": "پاک کردن شهر",
+      "clearCategory": "پاک کردن دسته‌بندی"
+    },
+    "card": {
+      "noCreator": "نامشخص",
+      "createdBy": "ایجاد شده توسط {name}",
+      "view": "مشاهده مکان"
+    },
+    "detail": {
+      "edit": "ویرایش",
+      "delete": "حذف مکان",
+      "noCreator": "نامشخص",
+      "createdBy": "ایجاد شده توسط {name}",
+      "retry": "تلاش مجدد",
+      "createdAt": "افزوده‌شده در {date}",
+      "errors": {
+        "load": "دریافت این مکان ناموفق بود.",
+        "delete": "حذف مکان ناموفق بود."
+      },
+      "toasts": {
+        "deleted": "مکان با موفقیت حذف شد"
+      },
+      "deleteDialog": {
+        "title": "این مکان حذف شود؟",
+        "description": "این عمل غیرقابل بازگشت است. مکان به طور دائمی حذف خواهد شد.",
+        "confirm": "حذف مکان",
+        "cancel": "انصراف"
+      }
+    },
+    "form": {
+      "nameLabel": "نام مکان",
+      "namePlaceholder": "مثلاً کافه کتاب",
+      "descriptionLabel": "توضیحات",
+      "descriptionPlaceholder": "این مکان چگونه است؟",
+      "cityLabel": "شهر",
+      "cityPlaceholder": "شهر خود را انتخاب کنید",
+      "citySearchPlaceholder": "جستجوی شهر...",
+      "cityTypeToSearch": "برای جستجو تایپ کنید",
+      "cityNoResults": "شهری یافت نشد",
+      "clearCity": "پاک کردن شهر",
+      "addressLabel": "آدرس",
+      "addressPlaceholder": "مثلاً خیابان ولیعصر، تهران",
+      "categoryLabel": "دسته‌بندی",
+      "categoryPlaceholder": "دسته‌بندی را انتخاب کنید",
+      "noCategories": "دسته‌بندی‌ای در دسترس نیست",
+      "imageLabel": "آدرس تصویر (اختیاری)",
+      "imagePlaceholder": "https://example.com/image.jpg",
+      "create": "ایجاد مکان",
+      "save": "ذخیره تغییرات"
+    },
+    "createPage": {
+      "title": "ایجاد مکان",
+      "description": "مکان مورد اعتمادی را با جامعه به اشتراک بگذارید."
+    },
+    "editPage": {
+      "title": "ویرایش مکان",
+      "description": "جزئیات مکان خود را به‌روزرسانی کنید."
+    }
+  },
   "groups": {
     "title": "گروه‌ها",
     "description": "جوامعی را حول علایق مشترک کشف کنید و به آن‌ها بپیوندید.",

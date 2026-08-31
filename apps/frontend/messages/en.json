@@ -209,6 +209,96 @@
       "description": "Update your event details."
     }
   },
+  "places": {
+    "title": "Places",
+    "description": "Discover trusted places recommended by the community.",
+    "retry": "Retry",
+    "loadMore": "Load more",
+    "createPlace": "Create place",
+    "backToPlaces": "Back to places",
+    "backToPlace": "Back to place",
+    "errors": {
+      "load": "Failed to load places.",
+      "create": "Failed to create place.",
+      "update": "Failed to update place.",
+      "delete": "Failed to delete place."
+    },
+    "toasts": {
+      "created": "Place created successfully",
+      "updated": "Place updated successfully",
+      "deleted": "Place deleted successfully"
+    },
+    "empty": {
+      "title": "No places yet",
+      "description": "Be the first to share a place with the community.",
+      "action": "Create a place"
+    },
+    "filters": {
+      "searchPlaceholder": "Search places...",
+      "allCities": "All cities",
+      "allCategories": "All categories",
+      "searchCitiesPlaceholder": "Search cities...",
+      "typeToSearch": "Type to search cities",
+      "noResults": "No cities found",
+      "clearCity": "Clear city",
+      "clearCategory": "Clear category"
+    },
+    "card": {
+      "noCreator": "Unknown",
+      "createdBy": "Created by {name}",
+      "view": "View place"
+    },
+    "detail": {
+      "edit": "Edit",
+      "delete": "Delete place",
+      "noCreator": "Unknown",
+      "createdBy": "Created by {name}",
+      "retry": "Retry",
+      "createdAt": "Added {date}",
+      "errors": {
+        "load": "Failed to load this place.",
+        "delete": "Failed to delete place."
+      },
+      "toasts": {
+        "deleted": "Place deleted successfully"
+      },
+      "deleteDialog": {
+        "title": "Delete this place?",
+        "description": "This action cannot be undone. The place will be permanently removed.",
+        "confirm": "Delete place",
+        "cancel": "Cancel"
+      }
+    },
+    "form": {
+      "nameLabel": "Place name",
+      "namePlaceholder": "e.g. Book Cafe",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "What is this place like?",
+      "cityLabel": "City",
+      "cityPlaceholder": "Select a city",
+      "citySearchPlaceholder": "Search cities...",
+      "cityTypeToSearch": "Type to search cities",
+      "cityNoResults": "No cities found",
+      "clearCity": "Clear city",
+      "addressLabel": "Address",
+      "addressPlaceholder": "e.g. Valiasr Street, Tehran",
+      "categoryLabel": "Category",
+      "categoryPlaceholder": "Select a category",
+      "noCategories": "No categories available",
+      "imageLabel": "Image URL (optional)",
+      "imagePlaceholder": "https://example.com/image.jpg",
+      "create": "Create place",
+      "save": "Save changes"
+    },
+    "createPage": {
+      "title": "Create a place",
+      "description": "Share a trusted place with the community."
+    },
+    "editPage": {
+      "title": "Edit place",
+      "description": "Update your place details."
+    }
+  },
   "groups": {
     "title": "Groups",
     "description": "Discover and join communities around shared interests.",
