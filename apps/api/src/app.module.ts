@@ -11,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { InterestModule } from './intereset/interest.module.js';
 import { CitiesModule } from './cities/cities.module.js';
 import { MatchModule } from './match/match.module.js';
+import { MessagingModule } from './messaging/messaging.module.js';
 import { GroupsModule } from './groups/groups.module.js';
 import { EventsModule } from './events/events.module.js';
 import { PlacesModule } from './places/places.module.js';
@@ -28,6 +29,7 @@ import { PlaceCategoriesModule } from './place-categories/place-categories.modul
     InterestModule,
     CitiesModule,
     MatchModule,
+    MessagingModule,
     GroupsModule,
     EventsModule,
     PlacesModule,

@@ -16,6 +16,7 @@ import { usePublicProfile } from "@/hooks/use-matches"
 import { CompatibilityScore } from "./compatibility-score"
 import { InterestBadge } from "./interest-badge"
 import { MatchActions } from "./match-actions"
+import { SendMessageButton } from "./send-message-button"
 
 function getInitials(firstName?: string | null, lastName?: string | null) {
   const first = firstName?.trim().charAt(0) ?? ""
@@ -139,12 +140,15 @@ export function ProfileDetailPage({ profileId }: { profileId: string }) {
             </div>
 
             {!isOwnProfile && (
-              <MatchActions
-                userId={profile.userId}
-                profileId={profile.id}
-                status={profile.matchStatus}
-                showViewProfile={false}
-              />
+              <div className="mx-auto flex w-full max-w-md flex-wrap items-center justify-center gap-2 sm:mx-0 sm:justify-start">
+                <SendMessageButton userId={profile.userId} />
+                <MatchActions
+                  userId={profile.userId}
+                  profileId={profile.id}
+                  status={profile.matchStatus}
+                  showViewProfile={false}
+                />
+              </div>
             )}
           </div>
         </CardContent>

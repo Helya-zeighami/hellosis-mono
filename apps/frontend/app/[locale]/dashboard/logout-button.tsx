@@ -7,6 +7,7 @@ import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores/auth-store";
 import { useLogout } from "@/hooks/use-auth";
+import { messagingSocket } from "@/services/socket";
 
 export default function LogoutButton({ label }: { label: string }) {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function LogoutButton({ label }: { label: string }) {
     const refreshToken = session?.refreshToken;
 
     const finishLogout = () => {
+      messagingSocket.disconnect();
       clearSession();
       router.replace("/login");
       router.refresh();

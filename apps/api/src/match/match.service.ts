@@ -297,6 +297,133 @@ export class MatchService {
   }
 
   // =========================
+  // FRIENDS (ACCEPTED MATCHES)
+  // =========================
+
+  async getFriends(userId: string) {
+    const currentProfile = await this.prisma.profile.findUnique({
+      where: {
+        userId,
+      },
+      include: {
+        interests: {
+          include: {
+            interest: true,
+          },
+        },
+      },
+    });
+
+    if (!currentProfile) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    const currentInterestIds = new Set(
+      currentProfile.interests.map(
+        (userInterest) => userInterest.interestId,
+      ),
+    );
+
+    const matches = await this.prisma.match.findMany({
+      where: {
+        status: MatchStatus.ACCEPTED,
+        OR: [
+          { senderId: userId },
+          { recipientId: userId },
+        ],
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+      include: {
+        sender: {
+          include: {
+            profile: {
+              include: {
+                city: true,
+                interests: {
+                  include: {
+                    interest: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        recipient: {
+          include: {
+            profile: {
+              include: {
+                city: true,
+                interests: {
+                  include: {
+                    interest: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    type FriendPayload = ReturnType<
+      typeof MatchService.prototype.mapProfile
+    > & {
+      matchId: string;
+      matchedAt: Date | null;
+    };
+
+    const friends: FriendPayload[] = [];
+
+    for (const match of matches) {
+      const otherUser =
+        match.senderId === userId
+          ? match.recipient
+          : match.sender;
+
+      const profile = otherUser.profile;
+
+      if (!profile) {
+        continue;
+      }
+
+      const sharedInterests = profile.interests.filter(
+        (userInterest) =>
+          currentInterestIds.has(userInterest.interestId),
+      );
+
+      const sameCity =
+        currentProfile.cityId !== null &&
+        currentProfile.cityId === profile.cityId;
+
+      const score = computeMatchScore({
+        currentInterestCount:
+          currentProfile.interests.length,
+        otherInterestCount: profile.interests.length,
+        sharedInterestCount: sharedInterests.length,
+        sameCity,
+      });
+
+      friends.push({
+        ...this.mapProfile({
+          profile,
+          sharedInterests,
+          sameCity,
+          score,
+        }),
+        matchId: match.id,
+        matchedAt: match.respondedAt,
+      });
+    }
+
+    return successResponse(
+      'Friends retrieved successfully',
+      friends,
+    );
+  }
+
+  // =========================
   // ACCEPT REQUEST
   // =========================
 

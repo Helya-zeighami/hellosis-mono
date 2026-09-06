@@ -39,6 +39,11 @@ export class MatchController {
     return this.matchService.getRequests(req.user.id);
   }
 
+  @Get("matches/friends")
+  friends(@Req() req: AuthenticationRequest) {
+    return this.matchService.getFriends(req.user.id);
+  }
+
   @Patch("matches/:id/accept")
   accept(
     @Req() req: AuthenticationRequest,

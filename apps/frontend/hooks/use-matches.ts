@@ -5,11 +5,13 @@ import {
   getPublicProfile,
   sendMatchRequest,
   getMatchRequests,
+  getFriends,
   acceptMatchRequest,
   rejectMatchRequest,
   queryKeys,
   HttpError,
   type ApiResponse,
+  type Friend,
   type Match,
   type MatchRequest,
   type PublicProfile,
@@ -50,6 +52,13 @@ export function useMatchRequests() {
   })
 }
 
+export function useFriends() {
+  return useQuery<Friend[]>({
+    queryKey: queryKeys.matches.friends,
+    queryFn: () => getFriends().then((res) => res.data as Friend[]),
+  })
+}
+
 export function useAcceptMatch() {
   const queryClient = useQueryClient()
 
@@ -58,6 +67,7 @@ export function useAcceptMatch() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.matches.requests })
       queryClient.invalidateQueries({ queryKey: queryKeys.matches.recommendations })
+      queryClient.invalidateQueries({ queryKey: queryKeys.matches.friends })
     },
   })
 }

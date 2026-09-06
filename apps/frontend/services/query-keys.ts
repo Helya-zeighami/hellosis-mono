@@ -28,13 +28,17 @@ export const queryKeys = {
   },
   messages: {
     all: ["messages"] as const,
-    conversation: (userId: string) => ["messages", "conversation", userId] as const,
-    detail: (id: string) => ["messages", id] as const,
+    conversations: ["messages", "conversations"] as const,
+    conversation: (conversationId: string) =>
+      ["messages", "conversations", conversationId] as const,
+    messages: (conversationId: string) =>
+      ["messages", "messages", conversationId] as const,
   },
   matches: {
     all: ["matches"] as const,
     recommendations: ["matches", "recommendations"] as const,
     requests: ["matches", "requests"] as const,
+    friends: ["matches", "friends"] as const,
     detail: (id: string) => ["matches", id] as const,
   },
   events: {

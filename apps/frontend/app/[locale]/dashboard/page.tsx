@@ -141,10 +141,26 @@ export default async function DashboardPage({
             </CardHeader>
             <CardContent>
               <Link
-                href="/groups"
+                href="/events"
                 className={buttonVariants({ variant: "outline", size: "sm" })}
               >
                 {t("cards.events.action")}
+              </Link>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("cards.friends.title")}</CardTitle>
+              <CardDescription>
+                {t("cards.friends.description")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link
+                href="/friends"
+                className={buttonVariants({ variant: "outline", size: "sm" })}
+              >
+                {t("cards.friends.action")}
               </Link>
             </CardContent>
           </Card>

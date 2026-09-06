@@ -122,6 +122,11 @@
         "title": "Upcoming events",
         "description": "Find events happening near you.",
         "action": "See events"
+      },
+      "friends": {
+        "title": "Your friends",
+        "description": "See the people you matched with.",
+        "action": "View friends"
       }
     }
   },
@@ -410,6 +415,20 @@
       "action": "Discover"
     }
   },
+  "friends": {
+    "title": "Friends",
+    "description": "People you matched with.",
+    "messagesLink": "Messages",
+    "retry": "Retry",
+    "errors": {
+      "load": "Failed to load friends."
+    },
+    "empty": {
+      "title": "No friends yet",
+      "description": "Send match requests and accept others to make friends.",
+      "action": "Discover people"
+    }
+  },
   "matching": {
     "compatibility": {
       "label": "Compatibility"
@@ -465,6 +484,8 @@
       "noBio": "No bio yet.",
       "interestsTitle": "Interests",
       "noInterests": "No interests added yet.",
+      "sendMessage": "Send Message",
+      "openingChat": "Opening chat...",
       "retry": "Retry",
       "errors": {
         "load": "Failed to load this profile."
@@ -517,6 +538,32 @@
         "addInterest": "Failed to add interest",
         "removeInterest": "Failed to remove interest"
       }
+    }
+  },
+  "messaging": {
+    "title": "Messages",
+    "unknown": "Unknown",
+    "findPeople": "Find people",
+    "selectConversation": "Select a conversation to start chatting",
+    "retry": "Retry",
+    "send": "Send",
+    "inputPlaceholder": "Type a message...",
+    "backToConversations": "Back to conversations",
+    "online": "Online",
+    "offline": "Offline",
+    "connection": "Reconnecting...",
+    "loadingMessages": "Loading messages...",
+    "typing": "{name} is typing...",
+    "empty": {
+      "noConversations": "No conversations yet. Visit a friend's profile to start a conversation.",
+      "noLatestMessage": "No messages yet",
+      "messages": "No messages yet. Say hello!"
+    },
+    "errors": {
+      "conversations": "Unable to load conversations. Please try again.",
+      "conversation": "Unable to load this conversation. Please try again.",
+      "messages": "Unable to load messages. Please try again.",
+      "send": "Message failed to send. Please try again."
     }
   }
 }

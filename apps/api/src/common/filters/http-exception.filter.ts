@@ -18,11 +18,15 @@ export class HttpExceptionFilter
   ) {
     const ctx = host.switchToHttp();
 
-    const response =
-      ctx.getResponse<Response>();
-
     const request =
       ctx.getRequest<Request>();
+
+    if (!(exception instanceof HttpException)) {
+      console.error('[Unhandled error]', exception);
+    }
+
+    const response =
+      ctx.getResponse<Response>();
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
 

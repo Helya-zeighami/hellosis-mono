@@ -45,6 +45,11 @@ export interface MatchRequest {
   sender: Recommendation
 }
 
+export interface Friend extends Recommendation {
+  matchId: string
+  matchedAt: string | null
+}
+
 export function getRecommendations() {
   return http.get<ApiResponse<Recommendation[]>>("/matches/recommendations")
 }
@@ -59,6 +64,10 @@ export function sendMatchRequest(userId: string) {
 
 export function getMatchRequests() {
   return http.get<ApiResponse<MatchRequest[]>>("/matches/requests")
+}
+
+export function getFriends() {
+  return http.get<ApiResponse<Friend[]>>("/matches/friends")
 }
 
 export function acceptMatchRequest(matchId: string) {

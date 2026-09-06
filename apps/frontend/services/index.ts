@@ -22,6 +22,7 @@ export {
   getPublicProfile,
   sendMatchRequest,
   getMatchRequests,
+  getFriends,
   acceptMatchRequest,
   rejectMatchRequest,
   type Match,
@@ -30,6 +31,7 @@ export {
   type MatchRequest,
   type Recommendation,
   type PublicProfile,
+  type Friend,
 } from "./matches"
 export {
   getGroups,
@@ -81,3 +83,18 @@ export {
   type CreatePlaceInput,
   type UpdatePlaceInput,
 } from "./places"
+export {
+  getConversations,
+  getConversation,
+  createConversation,
+  getMessages,
+  type Conversation,
+  type LastMessagePreview,
+  type Message,
+  type MessageStatus,
+  type UserSummary,
+  type ProfileSummary,
+  type TypingEvent,
+  type PresenceResponse,
+  type FindMessagesParams,
+} from "./messaging"

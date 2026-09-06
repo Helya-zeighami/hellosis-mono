@@ -30,46 +30,61 @@ enum MatchStatus {
   REJECTED
 }
 
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+}
+
 // =====================
 // USER
 // =====================
 
 model User {
-  id          String  @id @default(uuid())
-  phoneNumber String  @unique
-  isVerified  Boolean @default(false)
+  id String @id @default(uuid())
+
+  phoneNumber String @unique
+
+  isVerified Boolean @default(false)
 
   createdAt DateTime @default(now())
+
   updatedAt DateTime @updatedAt
 
   profile Profile?
 
-  createdGroups Group[] @relation("GroupCreator")
-
+  // Groups
+  createdGroups    Group[]       @relation("GroupCreator")
   groupMemberships GroupMember[]
 
-  sentMessages     Message[] @relation("MessageSender")
-  receivedMessages Message[] @relation("MessageReceiver")
+  // Messaging
+  userOneConversations Conversation[] @relation("UserOneConversations")
+  userTwoConversations Conversation[] @relation("UserTwoConversations")
+  sentMessages         Message[]      @relation("MessageSender")
 
+  // Matching
   sentMatches     Match[] @relation("MatchSender")
   receivedMatches Match[] @relation("MatchRecipient")
-  createdEvents   Event[] @relation("EventCreator")
 
-  eventLikes EventLike[]
-
+  // Events
+  createdEvents Event[]        @relation("EventCreator")
+  eventLikes    EventLike[]
   eventDislikes EventDislike[]
-
   eventComments EventComment[]
 
-  createdPlaces Place[] @relation("PlaceCreator")
+  // Places
+  createdPlaces Place[]  @relation("PlaceCreator")
+  reviews       Review[]
 
-  reviews Review[]
-
+  // Reports
   reportsSent     Report[] @relation("Reporter")
   reportsReceived Report[] @relation("ReportedUser")
 
+  // Notifications
   notifications Notification[]
-  sessions      Session[]
+
+  // Sessions
+  sessions Session[]
 
   @@map("users")
 }
@@ -261,19 +276,44 @@ model GroupMember {
 model Message {
   id String @id @default(uuid())
 
+  conversationId String
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
   senderId String
-  sender   User   @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
 
-  receiverId String
-  receiver   User   @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
-
+  sender  User   @relation("MessageSender", fields: [senderId], references: [id])
   content String
 
-  createdAt DateTime @default(now())
+  status MessageStatus @default(SENT)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([conversationId, createdAt])
   @@index([senderId])
-  @@index([receiverId])
-  @@map("messages")
+}
+
+model Conversation {
+  id String @id @default(uuid())
+
+  userOneId String
+  userTwoId String
+
+  userOne User @relation("UserOneConversations", fields: [userOneId], references: [id])
+
+  userTwo User @relation("UserTwoConversations", fields: [userTwoId], references: [id])
+
+  messages Message[]
+
+  lastMessageAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userOneId, userTwoId])
+  @@index([userOneId])
+  @@index([userTwoId])
 }
 
 // =====================
