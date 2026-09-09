@@ -98,3 +98,9 @@ export {
   type PresenceResponse,
   type FindMessagesParams,
 } from "./messaging"
+export {
+  getGroupMessages,
+  type GroupMessage,
+  type GroupTypingEvent,
+  type FindGroupMessagesParams,
+} from "./group-messaging"

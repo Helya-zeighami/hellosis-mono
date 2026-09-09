@@ -12,6 +12,7 @@ import { InterestModule } from './intereset/interest.module.js';
 import { CitiesModule } from './cities/cities.module.js';
 import { MatchModule } from './match/match.module.js';
 import { MessagingModule } from './messaging/messaging.module.js';
+import { GroupMessagingModule } from './group-messaging/group-messaging.module.js';
 import { GroupsModule } from './groups/groups.module.js';
 import { EventsModule } from './events/events.module.js';
 import { PlacesModule } from './places/places.module.js';
@@ -30,6 +31,7 @@ import { PlaceCategoriesModule } from './place-categories/place-categories.modul
     CitiesModule,
     MatchModule,
     MessagingModule,
+    GroupMessagingModule,
     GroupsModule,
     EventsModule,
     PlacesModule,

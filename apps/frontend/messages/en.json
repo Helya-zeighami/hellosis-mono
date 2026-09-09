@@ -348,6 +348,7 @@
     },
     "detail": {
       "edit": "Edit",
+      "chat": "Group chat",
       "join": "Join group",
       "leave": "Leave group",
       "ownerNotice": "You are the owner",
@@ -562,6 +563,31 @@
     "errors": {
       "conversations": "Unable to load conversations. Please try again.",
       "conversation": "Unable to load this conversation. Please try again.",
+      "messages": "Unable to load messages. Please try again.",
+      "send": "Message failed to send. Please try again."
+    }
+  },
+  "groupMessaging": {
+    "backToGroup": "Back to group",
+    "unknown": "Unknown",
+    "members": "{count, plural, =0 {No members} one {# member} other {# members}}",
+    "connection": "Reconnecting...",
+    "send": "Send",
+    "inputPlaceholder": "Type a message...",
+    "loadingMessages": "Loading messages...",
+    "loadingOlder": "Loading older messages...",
+    "retry": "Retry",
+    "notMember": "You are not a member of this group.",
+    "typing": {
+      "single": "{name} is typing...",
+      "two": "{first} and {second} are typing...",
+      "many": "{count} people are typing..."
+    },
+    "empty": {
+      "messages": "No messages yet. Start the conversation!"
+    },
+    "errors": {
+      "group": "Unable to load this group. Please try again.",
       "messages": "Unable to load messages. Please try again.",
       "send": "Message failed to send. Please try again."
     }

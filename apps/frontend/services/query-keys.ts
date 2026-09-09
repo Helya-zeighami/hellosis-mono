@@ -34,6 +34,10 @@ export const queryKeys = {
     messages: (conversationId: string) =>
       ["messages", "messages", conversationId] as const,
   },
+  groupMessages: {
+    all: ["group-messages"] as const,
+    messages: (groupId: string) => ["group-messages", groupId] as const,
+  },
   matches: {
     all: ["matches"] as const,
     recommendations: ["matches", "recommendations"] as const,

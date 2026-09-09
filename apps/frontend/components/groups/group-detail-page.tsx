@@ -1,8 +1,12 @@
 "use client"
 
+import { HugeiconsIcon } from "@hugeicons/react"
+import { BubbleChatIcon } from "@hugeicons/core-free-icons"
 import { useTranslations } from "next-intl"
 
+import { Link } from "@/i18n/navigation"
 import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { GroupHeader } from "./group-header"
 import { GroupMembers } from "./group-members"
 import { JoinButton } from "./join-button"
@@ -52,6 +56,15 @@ export function GroupDetailPage({ groupId }: GroupDetailPageProps) {
           currentUserId={currentUserId}
           members={group.members}
         />
+        {group.members.some((member) => member.userId === currentUserId) && (
+          <Link
+            href={`/groups/${groupId}/chat`}
+            className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full")}
+          >
+            <HugeiconsIcon icon={BubbleChatIcon} className="size-4" />
+            {t("chat")}
+          </Link>
+        )}
       </div>
 
       <section className="flex flex-col gap-4">

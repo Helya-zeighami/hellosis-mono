@@ -4,6 +4,7 @@ import { useAuthStore } from "@/stores/auth-store"
 import { API_URL } from "./http"
 import type { ApiResponse } from "./profile"
 import type { Message, PresenceResponse, TypingEvent } from "./messaging"
+import type { GroupMessage, GroupTypingEvent } from "./group-messaging"
 
 export type SocketStatus = "connecting" | "connected" | "disconnected"
 
@@ -14,6 +15,9 @@ export interface MessageSocketEventMap {
   "message:new": (response: ApiResponse<Message>) => void
   "typing:start": (event: TypingEvent) => void
   "typing:stop": (event: TypingEvent) => void
+  "group-message:new": (message: GroupMessage) => void
+  "group-typing:start": (event: GroupTypingEvent) => void
+  "group-typing:stop": (event: GroupTypingEvent) => void
 }
 
 export interface MessageSocketEmitMap {
@@ -21,6 +25,11 @@ export interface MessageSocketEmitMap {
   "message:send": { conversationId: string; content: string }
   "typing:start": { conversationId: string }
   "typing:stop": { conversationId: string }
+  "group:join": { groupId: string }
+  "group:leave": { groupId: string }
+  "group-message:send": { groupId: string; content: string }
+  "group-typing:start": { groupId: string }
+  "group-typing:stop": { groupId: string }
 }
 
 type SocketHandler = (...args: unknown[]) => void
