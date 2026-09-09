@@ -318,7 +318,7 @@ export default function EditProfilePage() {
             </section>
 
             <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-              <Link href="/profile" className={buttonVariants({ variant: "outline" })}>
+              <Link href="/dashboard/profile" className={buttonVariants({ variant: "outline" })}>
                 {t("cancel")}
               </Link>
               <Button type="submit" size="lg" disabled={updateProfileMutation.isPending}>

@@ -28,7 +28,7 @@ export function EditEventForm({ eventId }: EditEventFormProps) {
     updateEvent.mutate(data, {
       onSuccess: () => {
         toast.success(t("toasts.updated"))
-        router.push(`/events/${eventId}`)
+        router.push(`/dashboard/events/${eventId}`)
       },
       onError: () => {
         toast.error(t("errors.update"))

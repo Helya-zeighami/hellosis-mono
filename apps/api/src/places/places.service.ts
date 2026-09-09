@@ -3,13 +3,22 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
+import { ForbiddenError, subject } from "@casl/ability";
 
 import { PrismaService } from "../prisma/prisma.service.js";
 import { successResponse } from "../common/utils/api-response.util.js";
 
+import { ApprovalStatus } from "../../generated/prisma/enums.js";
+import { defineAbilityFor } from "../auth/casl/define-ability.factory.js";
+
 import { CreatePlaceDto } from "./dto/create-place.dto.js";
 import { UpdatePlaceDto } from "./dto/update-place.dto.js";
 import { FindPlacesDto } from "./dto/find-places.dto.js";
+
+export interface PlaceRequestUser {
+  id: string;
+  role: "USER" | "ADMIN";
+}
 
 @Injectable()
 export class PlacesService {
@@ -64,6 +73,7 @@ export class PlacesService {
         categoryId: dto.categoryId,
         imageUrl: dto.imageUrl,
         createdById: userId,
+        approvalStatus: ApprovalStatus.PENDING,
       },
       include: this.placeInclude,
     });
@@ -75,11 +85,14 @@ export class PlacesService {
   // GET ALL PLACES
   // =====================================================
 
-  async findAll(query: FindPlacesDto) {
+  async findAll(query: FindPlacesDto, user?: PlaceRequestUser) {
     const { search, cityId, categoryId, page = 1, limit = 20 } = query;
+
+    const isAdmin = user?.role === "ADMIN";
 
     const places = await this.prisma.place.findMany({
       where: {
+        ...(isAdmin ? {} : { approvalStatus: ApprovalStatus.APPROVED }),
         ...(cityId && { cityId }),
         ...(categoryId && { categoryId }),
         ...(search && {
@@ -100,7 +113,12 @@ export class PlacesService {
         }),
       },
 
-      include: this.placeInclude,
+      include: {
+        ...this.placeInclude,
+        approvedBy: isAdmin
+          ? { select: { id: true, phoneNumber: true } }
+          : false,
+      },
 
       skip: (page - 1) * limit,
       take: limit,
@@ -117,13 +135,20 @@ export class PlacesService {
   // GET ONE PLACE
   // =====================================================
 
-  async findOne(id: string) {
+  async findOne(id: string, user?: PlaceRequestUser) {
     const place = await this.prisma.place.findUnique({
       where: { id },
       include: this.placeInclude,
     });
 
     if (!place) {
+      throw new NotFoundException("Place not found");
+    }
+
+    const isAdmin = user?.role === "ADMIN";
+    const isCreator = !!user && place.createdById === user.id;
+
+    if (place.approvalStatus !== ApprovalStatus.APPROVED && !isAdmin && !isCreator) {
       throw new NotFoundException("Place not found");
     }
 
@@ -134,7 +159,11 @@ export class PlacesService {
   // UPDATE PLACE
   // =====================================================
 
-  async update(userId: string, placeId: string, dto: UpdatePlaceDto) {
+  async update(
+    user: PlaceRequestUser,
+    placeId: string,
+    dto: UpdatePlaceDto,
+  ) {
     const place = await this.prisma.place.findUnique({
       where: { id: placeId },
     });
@@ -143,7 +172,14 @@ export class PlacesService {
       throw new NotFoundException("Place not found");
     }
 
-    if (place.createdById !== userId) {
+    const ability = defineAbilityFor(user);
+
+    try {
+      ForbiddenError.from(ability).throwUnlessCan(
+        "update",
+        subject("Place", place),
+      );
+    } catch {
       throw new ForbiddenException("You cannot update this place");
     }
 
@@ -187,7 +223,7 @@ export class PlacesService {
   // DELETE PLACE
   // =====================================================
 
-  async remove(userId: string, placeId: string) {
+  async remove(user: PlaceRequestUser, placeId: string) {
     const place = await this.prisma.place.findUnique({
       where: { id: placeId },
     });
@@ -196,7 +232,14 @@ export class PlacesService {
       throw new NotFoundException("Place not found");
     }
 
-    if (place.createdById !== userId) {
+    const ability = defineAbilityFor(user);
+
+    try {
+      ForbiddenError.from(ability).throwUnlessCan(
+        "delete",
+        subject("Place", place),
+      );
+    } catch {
       throw new ForbiddenException("You cannot delete this place");
     }
 

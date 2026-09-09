@@ -46,7 +46,7 @@ export default async function CreatePlaceRoute({
           <Logo />
         </Link>
         <Link
-          href="/places"
+          href="/dashboard/places"
           className={buttonVariants({ variant: "ghost", size: "sm" })}
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} />

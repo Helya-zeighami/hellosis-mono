@@ -21,7 +21,7 @@ export function CreateGroupForm() {
     createGroup.mutate(data, {
       onSuccess: (res) => {
         toast.success(t("toasts.created"))
-        router.push(`/groups/${res.data?.id}`)
+        router.push(`/dashboard/groups/${res.data?.id}`)
       },
       onError: () => {
         toast.error(t("errors.create"))

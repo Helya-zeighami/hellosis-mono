@@ -7,6 +7,7 @@ import { AuthController } from './auth.controller.js';
 import { PrismaModule } from '../prisma/prisma.module.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy.js';
+import { RolesGuard } from './casl/roles.guard.js';
 
 @Module({
   imports: [
@@ -34,19 +35,10 @@ import { JwtStrategy } from './strategies/jwt.strategy.js';
     }),
   ],
 
-  controllers: [
-    AuthController,
-  ],
+  controllers: [AuthController],
 
-  providers: [
-    AuthService,
-    JwtStrategy,
-  ],
+  providers: [AuthService, JwtStrategy, RolesGuard],
 
-  exports: [
-    JwtModule,
-    PassportModule,
-    JwtStrategy,
-  ],
+  exports: [JwtModule, PassportModule, JwtStrategy, RolesGuard],
 })
 export class AuthModule {}

@@ -53,7 +53,7 @@ export function FriendsPage() {
           title={t("empty.title")}
           description={t("empty.description")}
           actionLabel={t("empty.action")}
-          actionHref="/discover"
+          actionHref="/dashboard/discover"
         />
       ) : (
         <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">

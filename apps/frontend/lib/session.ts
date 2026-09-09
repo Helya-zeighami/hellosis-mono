@@ -3,6 +3,7 @@ export const SESSION_COOKIE = "hellosis_session"
 export interface SessionUser {
   id: string
   phoneNumber: string
+  role?: "USER" | "ADMIN"
 }
 
 export interface Session {

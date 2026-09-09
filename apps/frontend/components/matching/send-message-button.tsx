@@ -23,7 +23,7 @@ export function SendMessageButton({ userId }: { userId: string }) {
       onSuccess: (response) => {
         const conversationId = response.data?.id
         if (!conversationId) return
-        router.push(`/messages/${conversationId}`)
+        router.push(`/dashboard/messages/${conversationId}`)
       },
       onError: (error) => {
         toast.error(getErrorMessage(error))

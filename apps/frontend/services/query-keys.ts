@@ -56,6 +56,11 @@ export const queryKeys = {
     byCity: (cityId: string) => ["places", "city", cityId] as const,
     categories: ["places", "categories"] as const,
   },
+  admin: {
+    events: ["admin", "events"] as const,
+    places: ["admin", "places"] as const,
+    users: ["admin", "users"] as const,
+  },
   reviews: {
     all: ["reviews"] as const,
     detail: (id: string) => ["reviews", id] as const,

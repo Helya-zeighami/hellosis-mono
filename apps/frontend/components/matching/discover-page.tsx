@@ -60,7 +60,7 @@ export function DiscoverPage() {
           title={t("empty.title")}
           description={t("empty.description")}
           actionLabel={t("empty.action")}
-          actionHref="/profile/edit"
+          actionHref="/dashboard/profile/edit"
         />
       ) : (
         <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">

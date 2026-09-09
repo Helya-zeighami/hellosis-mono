@@ -83,7 +83,7 @@ export function EventsPage() {
             </p>
           </div>
           <Link
-            href="/events/create"
+            href="/dashboard/events/create"
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             {t("empty.action")}

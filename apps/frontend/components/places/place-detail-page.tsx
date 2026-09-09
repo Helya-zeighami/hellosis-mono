@@ -54,7 +54,7 @@ export function PlaceDetailPage({ placeId }: PlaceDetailPageProps) {
     deletePlace.mutate(placeId, {
       onSuccess: () => {
         toast.success(t("toasts.deleted"))
-        router.push("/places")
+        router.push("/dashboard/places")
       },
       onError: () => {
         toast.error(t("errors.delete"))

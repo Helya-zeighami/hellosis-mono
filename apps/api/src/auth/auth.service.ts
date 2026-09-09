@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { successResponse } from '../common/utils/api-response.util.js';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto.js';
+import { RefreshDto } from './dto/refresh.dto.js';
 
 @Injectable()
 export class AuthService {
@@ -33,11 +34,10 @@ export class AuthService {
           data: {
             phoneNumber,
             isVerified: false,
-             profile:{
-            create:{}
-          }
+            profile: {
+              create: {},
+            },
           },
-         
         });
       }
 
@@ -117,14 +117,112 @@ export class AuthService {
       user: {
         id: user.id,
         phoneNumber: user.phoneNumber,
+        role: user.role,
       },
       ...tokens,
     });
   }
 
+  async refresh(dto: RefreshDto) {
+    const { refreshToken } = dto;
+
+    if (!refreshToken) {
+      throw new UnauthorizedException('Refresh token is required');
+    }
+
+    const refreshTokenHash = createHash('sha256')
+      .update(refreshToken)
+      .digest('hex');
+
+    const session = await this.prisma.session.findFirst({
+      where: {
+        refreshTokenHash,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!session) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    if (session.revokedAt) {
+      throw new UnauthorizedException('Session has been revoked');
+    }
+
+    if (session.expiresAt < new Date()) {
+      throw new UnauthorizedException('Session has expired');
+    }
+
+    try {
+      await this.jwt.verifyAsync(refreshToken, {
+        secret: process.env.JWT_REFRESH_SECRET,
+      });
+    } catch {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    const nextUser = session.user;
+
+    const accessToken = await this.jwt.signAsync(
+      {
+        sub: nextUser.id,
+        role: nextUser.role,
+      },
+      {
+        expiresIn: '15m',
+      },
+    );
+
+    // Rotate the refresh token
+    const newRefreshToken = await this.jwt.signAsync(
+      {
+        sub: nextUser.id,
+        role: nextUser.role,
+      },
+      {
+        secret: process.env.JWT_REFRESH_SECRET,
+        expiresIn: '30d',
+      },
+    );
+
+    const newRefreshTokenHash = createHash('sha256')
+      .update(newRefreshToken)
+      .digest('hex');
+
+    await this.prisma.$transaction([
+      this.prisma.session.delete({
+        where: { id: session.id },
+      }),
+      this.prisma.session.create({
+        data: {
+          userId: nextUser.id,
+          refreshTokenHash: newRefreshTokenHash,
+          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
+      }),
+    ]);
+
+    return successResponse('Tokens refreshed successfully', {
+      accessToken,
+      refreshToken: newRefreshToken,
+      user: {
+        id: nextUser.id,
+        phoneNumber: nextUser.phoneNumber,
+        role: nextUser.role,
+      },
+    });
+  }
+
   private async generateTokens(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
     const payload = {
       sub: userId,
+      role: user?.role ?? 'USER',
     };
 
     const accessToken = await this.jwt.signAsync(payload, {
@@ -132,6 +230,7 @@ export class AuthService {
     });
 
     const refreshToken = await this.jwt.signAsync(payload, {
+      secret: process.env.JWT_REFRESH_SECRET,
       expiresIn: '30d',
     });
 

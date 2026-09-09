@@ -22,7 +22,7 @@ export function CreateEventForm() {
     createEvent.mutate(data, {
       onSuccess: (res) => {
         toast.success(t("toasts.created"))
-        router.push(`/events/${res.data?.id}`)
+        router.push(`/dashboard/events/${res.data?.id}`)
       },
       onError: () => {
         toast.error(t("errors.create"))

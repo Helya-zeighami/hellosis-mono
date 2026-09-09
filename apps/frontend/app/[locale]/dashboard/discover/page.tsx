@@ -47,7 +47,7 @@ export default async function DiscoverRoute({
         </Link>
         <div className="flex items-center gap-3">
           <Link
-            href="/matches"
+            href="/dashboard/matches"
             className={buttonVariants({ variant: "ghost", size: "sm" })}
           >
             <HugeiconsIcon icon={InboxIcon} />

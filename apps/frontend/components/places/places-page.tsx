@@ -91,7 +91,7 @@ export function PlacesPage() {
             </p>
           </div>
           <Link
-            href="/places/create"
+            href="/dashboard/places/create"
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             {t("empty.action")}

@@ -13,6 +13,68 @@ export class HttpError extends Error {
   }
 }
 
+let refreshPromise: Promise<boolean> | null = null
+
+async function attemptRefresh(): Promise<boolean> {
+  const store = useAuthStore.getState()
+  const refreshToken = store.session?.refreshToken
+
+  if (!refreshToken) return false
+
+  try {
+    const res = await fetch(`${API_URL}/auth/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
+    })
+
+    if (!res.ok) {
+      store.clearSession()
+      return false
+    }
+
+    const json = (await res.json()) as {
+      data?: {
+        accessToken?: string
+        refreshToken?: string
+        user?: { id: string; phoneNumber: string; role?: "USER" | "ADMIN" }
+      }
+    }
+
+    const data = json.data
+    const previous = store.session
+
+    if (!data?.accessToken || !data.refreshToken || !previous) {
+      store.clearSession()
+      return false
+    }
+
+    store.updateSession({
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      user: {
+        id: data.user?.id ?? previous.user.id,
+        phoneNumber: data.user?.phoneNumber ?? previous.user.phoneNumber,
+        role: data.user?.role ?? previous.user.role,
+      },
+    })
+
+    return true
+  } catch {
+    useAuthStore.getState().clearSession()
+    return false
+  }
+}
+
+async function refreshWithMutex(): Promise<boolean> {
+  if (!refreshPromise) {
+    refreshPromise = attemptRefresh().finally(() => {
+      refreshPromise = null
+    })
+  }
+  return refreshPromise
+}
+
 export async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const accessToken = useAuthStore.getState().session?.accessToken
   const headers: HeadersInit = {
@@ -35,6 +97,23 @@ export async function apiFetch<T>(path: string, options?: RequestInit): Promise<
     } catch {
       body = undefined
     }
+
+    const shouldRefresh =
+      res.status === 401 &&
+      !path.startsWith("/auth/refresh") &&
+      !path.startsWith("/auth/login") &&
+      !(options as { __retried?: boolean } | undefined)?.__retried
+
+    if (shouldRefresh) {
+      const refreshed = await refreshWithMutex()
+      if (refreshed) {
+        return apiFetch<T>(path, {
+          ...options,
+          __retried: true,
+        } as RequestInit)
+      }
+    }
+
     throw new HttpError(res.status, `Request failed with status ${res.status}`, body)
   }
 

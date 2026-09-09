@@ -46,7 +46,7 @@ export default async function FriendsRoute({
           <Logo />
         </Link>
         <Link
-          href="/messages"
+          href="/dashboard/messages"
           className={buttonVariants({ variant: "ghost", size: "sm" })}
         >
           <HugeiconsIcon icon={Message02Icon} />

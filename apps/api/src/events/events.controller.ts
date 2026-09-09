@@ -35,9 +35,10 @@ export class EventsController {
 
   @Get()
   async findAll(
+    @Req() req: AuthenticationRequest,
     @Query() query: FindEventsDto,
   ) {
-    return this.eventsService.findAll(query);
+    return this.eventsService.findAll(req.user, query);
   }
 
   // =========================
@@ -46,9 +47,10 @@ export class EventsController {
 
   @Get(':id')
   async findOne(
+    @Req() req: AuthenticationRequest,
     @Param('id') id: string,
   ) {
-    return this.eventsService.findOne(id);
+    return this.eventsService.findOne(id, req.user);
   }
 
   // =========================
@@ -77,7 +79,7 @@ export class EventsController {
     @Body() dto: UpdateEventDto,
   ) {
     return this.eventsService.update(
-      req.user.id,
+      req.user,
       id,
       dto,
     );
@@ -93,7 +95,7 @@ export class EventsController {
     @Param('id') id: string,
   ) {
     return this.eventsService.remove(
-      req.user.id,
+      req.user,
       id,
     );
   }

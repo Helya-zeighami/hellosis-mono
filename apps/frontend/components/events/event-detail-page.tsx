@@ -52,7 +52,7 @@ export function EventDetailPage({ eventId }: EventDetailPageProps) {
     deleteEvent.mutate(eventId, {
       onSuccess: () => {
         toast.success(t("toasts.deleted"))
-        router.push("/events")
+        router.push("/dashboard/events")
       },
       onError: () => {
         toast.error(t("errors.delete"))

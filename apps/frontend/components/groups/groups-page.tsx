@@ -83,7 +83,7 @@ export function GroupsPage() {
             </p>
           </div>
           <Link
-            href="/groups/create"
+            href="/dashboard/groups/create"
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             {t("empty.action")}

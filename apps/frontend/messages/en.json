@@ -102,6 +102,7 @@
     "welcome": "Welcome back",
     "verified": "Verified identity",
     "logout": "Log out",
+    "admin": "Admin",
     "cards": {
       "profile": {
         "title": "Your profile",
@@ -123,10 +124,126 @@
         "description": "Find events happening near you.",
         "action": "See events"
       },
+      "places": {
+        "title": "Trusted places",
+        "description": "Discover community-approved places.",
+        "action": "Browse places"
+      },
+      "messages": {
+        "title": "Messages",
+        "description": "Chat with friends and groups.",
+        "action": "Open messages"
+      },
+      "matches": {
+        "title": "Match requests",
+        "description": "Review people who sent you a request.",
+        "action": "View requests"
+      },
       "friends": {
         "title": "Your friends",
         "description": "See the people you matched with.",
         "action": "View friends"
+      },
+      "admin": {
+        "title": "Admin panel",
+        "description": "Approve places and events, manage users.",
+        "action": "Open admin"
+      }
+    }
+  },
+  "admin": {
+    "title": "Admin dashboard",
+    "description": "Review and approve community submissions.",
+    "backToDashboard": "Back to dashboard",
+    "logout": "Log out",
+    "nav": {
+      "overview": "Overview",
+      "events": "Events",
+      "places": "Places",
+      "users": "Users"
+    },
+    "overview": {
+      "events": {
+        "title": "Pending events",
+        "description": "Events waiting for your review.",
+        "action": "Review events"
+      },
+      "places": {
+        "title": "Pending places",
+        "description": "Places waiting for your review.",
+        "action": "Review places"
+      }
+    },
+    "events": {
+      "title": "Pending events",
+      "description": "Events waiting for review.",
+      "by": "by",
+      "noCity": "No city",
+      "approve": "Approve",
+      "reject": "Reject",
+      "retry": "Retry",
+      "status": {
+        "pending": "Pending"
+      },
+      "toasts": {
+        "approved": "Event approved",
+        "rejected": "Event rejected"
+      },
+      "errors": {
+        "load": "Failed to load pending events.",
+        "action": "Action failed, please try again."
+      },
+      "empty": {
+        "title": "No pending events",
+        "description": "All events are up to date."
+      }
+    },
+    "places": {
+      "title": "Pending places",
+      "description": "Places waiting for review.",
+      "by": "by",
+      "unknown": "Unknown",
+      "noCity": "No city",
+      "noCategory": "No category",
+      "approve": "Approve",
+      "reject": "Reject",
+      "retry": "Retry",
+      "status": {
+        "pending": "Pending"
+      },
+      "toasts": {
+        "approved": "Place approved",
+        "rejected": "Place rejected"
+      },
+      "errors": {
+        "load": "Failed to load pending places.",
+        "action": "Action failed, please try again."
+      },
+      "empty": {
+        "title": "No pending places",
+        "description": "All places are up to date."
+      }
+    },
+    "users": {
+      "title": "Users",
+      "description": "Manage user roles.",
+      "role": {
+        "admin": "Admin",
+        "user": "User"
+      },
+      "promote": "Make admin",
+      "revoke": "Revoke admin",
+      "retry": "Retry",
+      "toasts": {
+        "updated": "Role updated"
+      },
+      "errors": {
+        "load": "Failed to load users.",
+        "update": "Failed to update role."
+      },
+      "empty": {
+        "title": "No users yet",
+        "description": "Users will appear here."
       }
     }
   },

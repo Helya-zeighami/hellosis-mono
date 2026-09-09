@@ -46,7 +46,7 @@ export default async function CreateEventRoute({
           <Logo />
         </Link>
         <Link
-          href="/events"
+          href="/dashboard/events"
           className={buttonVariants({ variant: "ghost", size: "sm" })}
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} />

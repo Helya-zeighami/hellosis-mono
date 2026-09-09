@@ -96,7 +96,7 @@ export default async function HomePage({
               {t("createAccount")}
             </Link>
             <Link
-              href="/groups"
+              href="/dashboard/groups"
               className={buttonVariants({ variant: "outline", size: "lg" })}
             >
               {t("explore")}

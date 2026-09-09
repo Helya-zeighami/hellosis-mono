@@ -24,7 +24,7 @@ export interface LoginResponse {
 }
 
 export interface LoginData {
-  user?: { id: string; phoneNumber: string }
+  user?: { id: string; phoneNumber: string; role: "USER" | "ADMIN" }
   accessToken?: string
   refreshToken?: string
   developmentOtp?: string
@@ -32,6 +32,17 @@ export interface LoginData {
 
 export function login(phoneNumber: string, otp?: string) {
   return http.post<LoginResponse>("/auth/login", { phoneNumber, otp })
+}
+
+export interface RefreshResponse {
+  success: boolean
+  message: string
+  data: LoginData | null
+  error: { code: string; details?: unknown } | null
+}
+
+export function refresh(refreshToken: string) {
+  return http.post<RefreshResponse>("/auth/refresh", { refreshToken })
 }
 
 export interface LogoutResponse {

@@ -46,7 +46,7 @@ export default async function MessagesRoute({
           <Logo />
         </Link>
         <Link
-          href="/discover"
+          href="/dashboard/discover"
           className={buttonVariants({ variant: "ghost", size: "sm" })}
         >
           <HugeiconsIcon icon={UserGroupIcon} />

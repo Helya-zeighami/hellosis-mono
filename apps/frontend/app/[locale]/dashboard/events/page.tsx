@@ -47,7 +47,7 @@ export default async function EventsRoute({
         </Link>
         <div className="flex items-center gap-3">
           <Link
-            href="/events/create"
+            href="/dashboard/events/create"
             className={buttonVariants({ variant: "ghost", size: "sm" })}
           >
             <HugeiconsIcon icon={PlusSignIcon} />

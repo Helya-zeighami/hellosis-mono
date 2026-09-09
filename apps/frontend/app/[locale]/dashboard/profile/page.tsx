@@ -46,7 +46,7 @@ export default async function ProfileRoute({
           <Logo />
         </Link>
         <Link
-          href="/profile/edit"
+          href="/dashboard/profile/edit"
           className={buttonVariants({ variant: "default", size: "sm" })}
         >
           <HugeiconsIcon icon={Edit01Icon} />

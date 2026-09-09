@@ -47,7 +47,7 @@ export default async function PlacesRoute({
         </Link>
         <div className="flex items-center gap-3">
           <Link
-            href="/places/create"
+            href="/dashboard/places/create"
             className={buttonVariants({ variant: "ghost", size: "sm" })}
           >
             <HugeiconsIcon icon={PlusSignIcon} />

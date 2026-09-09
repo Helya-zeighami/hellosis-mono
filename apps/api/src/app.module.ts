@@ -17,6 +17,7 @@ import { GroupsModule } from './groups/groups.module.js';
 import { EventsModule } from './events/events.module.js';
 import { PlacesModule } from './places/places.module.js';
 import { PlaceCategoriesModule } from './place-categories/place-categories.module.js';
+import { AdminModule } from './admin/admin.module.js';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PlaceCategoriesModule } from './place-categories/place-categories.modul
     EventsModule,
     PlacesModule,
     PlaceCategoriesModule,
+    AdminModule,
   ],
 
   controllers: [

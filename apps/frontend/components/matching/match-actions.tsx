@@ -68,7 +68,7 @@ export function MatchActions({
   if (status === "RECEIVED") {
     return (
       <Link
-        href="/matches"
+        href="/dashboard/matches"
         className={buttonVariants({ variant: "default", size: "sm" })}
       >
         <HugeiconsIcon icon={Link02Icon} />
@@ -89,7 +89,7 @@ export function MatchActions({
       </Button>
       {showViewProfile && (
         <Link
-          href={`/profile/${profileId}`}
+          href={`/dashboard/profile/${profileId}`}
           className={buttonVariants({ variant: "outline", size: "sm" })}
         >
           <HugeiconsIcon icon={EyeIcon} />

@@ -4,18 +4,53 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ForbiddenError, subject } from '@casl/ability';
 
 import { PrismaService } from '../prisma/prisma.service.js';
 import { successResponse } from '../common/utils/api-response.util.js';
+
+import { ApprovalStatus } from '../../generated/prisma/enums.js';
+import { defineAbilityFor } from '../auth/casl/define-ability.factory.js';
 
 import { CreateEventDto } from './dto/create-event.dto.js';
 import { UpdateEventDto } from './dto/update-event.dto.js';
 import { FindEventsDto } from './dto/find-events.dto.js';
 import { CreateEventCommentDto } from './dto/create-event-comment.dto.js';
 
+export interface EventRequestUser {
+  id: string;
+  role: 'USER' | 'ADMIN';
+}
+
 @Injectable()
 export class EventsService {
   constructor(private readonly prisma: PrismaService) {}
+
+  private readonly eventInclude = {
+    city: true,
+
+    creator: {
+      select: {
+        id: true,
+
+        profile: {
+          select: {
+            firstName: true,
+            lastName: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    },
+
+    _count: {
+      select: {
+        likes: true,
+        dislikes: true,
+        comments: true,
+      },
+    },
+  };
 
   // =====================================================
   // CREATE EVENT
@@ -45,33 +80,11 @@ export class EventsService {
         startTime: new Date(dto.startTime),
 
         endTime: dto.endTime ? new Date(dto.endTime) : null,
+
+        approvalStatus: ApprovalStatus.PENDING,
       },
 
-      include: {
-        city: true,
-
-        creator: {
-          select: {
-            id: true,
-
-            profile: {
-              select: {
-                firstName: true,
-                lastName: true,
-                avatarUrl: true,
-              },
-            },
-          },
-        },
-
-        _count: {
-          select: {
-            likes: true,
-            dislikes: true,
-            comments: true,
-          },
-        },
-      },
+      include: this.eventInclude,
     });
 
     return successResponse('Event created successfully', event);
@@ -81,11 +94,17 @@ export class EventsService {
   // GET ALL EVENTS
   // =====================================================
 
-  async findAll(query: FindEventsDto) {
+  async findAll(user: EventRequestUser, query: FindEventsDto) {
     const { search, cityId, page = 1, limit = 20 } = query;
+
+    const isAdmin = user?.role === 'ADMIN';
 
     const events = await this.prisma.event.findMany({
       where: {
+        ...(isAdmin
+          ? {}
+          : { approvalStatus: ApprovalStatus.APPROVED }),
+
         startTime: {
           gte: new Date(),
         },
@@ -113,31 +132,7 @@ export class EventsService {
         }),
       },
 
-      include: {
-        city: true,
-
-        creator: {
-          select: {
-            id: true,
-
-            profile: {
-              select: {
-                firstName: true,
-                lastName: true,
-                avatarUrl: true,
-              },
-            },
-          },
-        },
-
-        _count: {
-          select: {
-            likes: true,
-            dislikes: true,
-            comments: true,
-          },
-        },
-      },
+      include: this.eventInclude,
 
       skip: (page - 1) * limit,
 
@@ -155,36 +150,14 @@ export class EventsService {
   // GET ONE EVENT
   // =====================================================
 
-  async findOne(id: string) {
+  async findOne(id: string, user?: EventRequestUser) {
     const event = await this.prisma.event.findUnique({
       where: {
         id,
       },
 
       include: {
-        city: true,
-
-        creator: {
-          select: {
-            id: true,
-
-            profile: {
-              select: {
-                firstName: true,
-                lastName: true,
-                avatarUrl: true,
-              },
-            },
-          },
-        },
-
-        _count: {
-          select: {
-            likes: true,
-            dislikes: true,
-            comments: true,
-          },
-        },
+        ...this.eventInclude,
 
         comments: {
           orderBy: {
@@ -214,6 +187,13 @@ export class EventsService {
       throw new NotFoundException('Event not found');
     }
 
+    const isAdmin = user?.role === 'ADMIN';
+    const isCreator = !!user && event.creatorId === user.id;
+
+    if (event.approvalStatus !== ApprovalStatus.APPROVED && !isAdmin && !isCreator) {
+      throw new NotFoundException('Event not found');
+    }
+
     return successResponse('Event retrieved successfully', event);
   }
 
@@ -221,7 +201,7 @@ export class EventsService {
   // UPDATE EVENT
   // =====================================================
 
-  async update(userId: string, eventId: string, dto: UpdateEventDto) {
+  async update(user: EventRequestUser, eventId: string, dto: UpdateEventDto) {
     const event = await this.prisma.event.findUnique({
       where: {
         id: eventId,
@@ -232,11 +212,17 @@ export class EventsService {
       throw new NotFoundException('Event not found');
     }
 
-    if (event.creatorId !== userId) {
+    const ability = defineAbilityFor(user);
+
+    try {
+      ForbiddenError.from(ability).throwUnlessCan(
+        'update',
+        subject('Event', event),
+      );
+    } catch {
       throw new ForbiddenException('You cannot update this event');
     }
 
-   
     if (dto.cityId) {
       const city = await this.prisma.city.findUnique({
         where: {
@@ -276,17 +262,7 @@ export class EventsService {
         }),
       },
 
-      include: {
-        city: true,
-
-        _count: {
-          select: {
-            likes: true,
-            dislikes: true,
-            comments: true,
-          },
-        },
-      },
+      include: this.eventInclude,
     });
 
     return successResponse('Event updated successfully', updatedEvent);
@@ -296,7 +272,7 @@ export class EventsService {
   // DELETE EVENT
   // =====================================================
 
-  async remove(userId: string, eventId: string) {
+  async remove(user: EventRequestUser, eventId: string) {
     const event = await this.prisma.event.findUnique({
       where: {
         id: eventId,
@@ -307,8 +283,14 @@ export class EventsService {
       throw new NotFoundException('Event not found');
     }
 
-    // Only creator can delete
-    if (event.creatorId !== userId) {
+    const ability = defineAbilityFor(user);
+
+    try {
+      ForbiddenError.from(ability).throwUnlessCan(
+        'delete',
+        subject('Event', event),
+      );
+    } catch {
       throw new ForbiddenException('You cannot delete this event');
     }
 

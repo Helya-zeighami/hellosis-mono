@@ -29,7 +29,7 @@ export function EditPlaceForm({ placeId }: EditPlaceFormProps) {
     updatePlace.mutate(data, {
       onSuccess: () => {
         toast.success(t("toasts.updated"))
-        router.push(`/places/${placeId}`)
+        router.push(`/dashboard/places/${placeId}`)
       },
       onError: () => {
         toast.error(t("errors.update"))

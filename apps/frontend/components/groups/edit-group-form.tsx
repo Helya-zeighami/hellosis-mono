@@ -27,7 +27,7 @@ export function EditGroupForm({ groupId }: EditGroupFormProps) {
     updateGroup.mutate(data, {
       onSuccess: () => {
         toast.success(t("toasts.updated"))
-        router.push(`/groups/${groupId}`)
+        router.push(`/dashboard/groups/${groupId}`)
       },
       onError: () => {
         toast.error(t("errors.update"))

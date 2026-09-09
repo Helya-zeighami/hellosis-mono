@@ -30,7 +30,7 @@ export function ChatHeader({
   return (
     <div className="flex shrink-0 items-center gap-2 border-b border-border/60 px-3 py-2.5">
       <Link
-        href="/messages"
+        href="/dashboard/messages"
         aria-label={t("backToConversations")}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "md:hidden")}
       >

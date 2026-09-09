@@ -19,6 +19,7 @@ import { FindPlacesDto } from "./dto/find-places.dto.js";
 
 import type { AuthenticationRequest } from "../common/interfaces/authentication-request.interface.js";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard.js";
+import { OptionalJwtAuthGuard } from "../auth/guards/optional-jwt-auth.guard.js";
 
 @Controller("places")
 export class PlacesController {
@@ -29,8 +30,12 @@ export class PlacesController {
   // =========================
 
   @Get()
-  async findAll(@Query() query: FindPlacesDto) {
-    return this.placesService.findAll(query);
+  @UseGuards(OptionalJwtAuthGuard)
+  async findAll(
+    @Req() req: AuthenticationRequest,
+    @Query() query: FindPlacesDto,
+  ) {
+    return this.placesService.findAll(query, req.user);
   }
 
   // =========================
@@ -38,8 +43,12 @@ export class PlacesController {
   // =========================
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
-    return this.placesService.findOne(id);
+  @UseGuards(OptionalJwtAuthGuard)
+  async findOne(
+    @Req() req: AuthenticationRequest,
+    @Param("id") id: string,
+  ) {
+    return this.placesService.findOne(id, req.user);
   }
 
   // =========================
@@ -56,7 +65,7 @@ export class PlacesController {
   }
 
   // =========================
-  // UPDATE PLACE (authenticated, creator only)
+  // UPDATE PLACE (authenticated, creator or admin)
   // =========================
 
   @Patch(":id")
@@ -66,11 +75,11 @@ export class PlacesController {
     @Param("id") id: string,
     @Body() dto: UpdatePlaceDto,
   ) {
-    return this.placesService.update(req.user.id, id, dto);
+    return this.placesService.update(req.user, id, dto);
   }
 
   // =========================
-  // DELETE PLACE (authenticated, creator only)
+  // DELETE PLACE (authenticated, creator or admin)
   // =========================
 
   @Delete(":id")
@@ -79,6 +88,6 @@ export class PlacesController {
     @Req() req: AuthenticationRequest,
     @Param("id") id: string,
   ) {
-    return this.placesService.remove(req.user.id, id);
+    return this.placesService.remove(req.user, id);
   }
 }

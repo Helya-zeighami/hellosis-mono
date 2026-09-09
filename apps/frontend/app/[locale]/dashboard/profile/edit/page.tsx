@@ -43,7 +43,7 @@ export default async function ProfileEditRoute({
         <Link href="/">
           <Logo />
         </Link>
-        <Link href="/profile" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+        <Link href="/dashboard/profile" className={buttonVariants({ variant: "ghost", size: "sm" })}>
           {t("viewProfile")}
         </Link>
       </header>

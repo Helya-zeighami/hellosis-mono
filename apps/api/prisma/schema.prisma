@@ -11,6 +11,17 @@ datasource db {
 // ENUMS
 // =====================
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum GroupRole {
   OWNER
   ADMIN
@@ -47,6 +58,8 @@ model User {
 
   isVerified Boolean @default(false)
 
+  role UserRole @default(USER)
+
   createdAt DateTime @default(now())
 
   updatedAt DateTime @updatedAt
@@ -69,12 +82,14 @@ model User {
 
   // Events
   createdEvents Event[]        @relation("EventCreator")
+  approvedEvents Event[]       @relation("EventApprover")
   eventLikes    EventLike[]
   eventDislikes EventDislike[]
   eventComments EventComment[]
 
   // Places
   createdPlaces Place[]  @relation("PlaceCreator")
+  approvedPlaces Place[] @relation("PlaceApprover")
   reviews       Review[]
 
   // Reports
@@ -366,6 +381,13 @@ model Event {
   dislikes EventDislike[]
   comments EventComment[]
 
+  approvalStatus ApprovalStatus @default(PENDING)
+
+  approvedById String?
+  approvedBy   User?   @relation("EventApprover", fields: [approvedById], references: [id])
+
+  approvedAt DateTime?
+
   createdAt DateTime @default(now())
 
   @@index([startTime])
@@ -461,6 +483,13 @@ model Place {
 
   createdById String?
   createdBy   User?   @relation("PlaceCreator", fields: [createdById], references: [id])
+
+  approvalStatus ApprovalStatus @default(PENDING)
+
+  approvedById String?
+  approvedBy   User?   @relation("PlaceApprover", fields: [approvedById], references: [id])
+
+  approvedAt DateTime?
 
   reviews Review[]
 

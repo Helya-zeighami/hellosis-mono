@@ -46,7 +46,7 @@ export default async function GroupDetailRoute({
           <Logo />
         </Link>
         <Link
-          href="/groups"
+          href="/dashboard/groups"
           className={buttonVariants({ variant: "ghost", size: "sm" })}
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} />

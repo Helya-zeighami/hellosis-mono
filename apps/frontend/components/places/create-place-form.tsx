@@ -23,7 +23,7 @@ export function CreatePlaceForm() {
     createPlace.mutate(data, {
       onSuccess: (res) => {
         toast.success(t("toasts.created"))
-        router.push(`/places/${res.data?.id}`)
+        router.push(`/dashboard/places/${res.data?.id}`)
       },
       onError: () => {
         toast.error(t("errors.create"))
