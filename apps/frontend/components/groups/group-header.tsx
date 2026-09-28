@@ -44,7 +44,7 @@ export function GroupHeader({ group, currentUserId }: GroupHeaderProps) {
           </h1>
           {isOwnerOrAdmin && (
             <Link
-              href={`/groups/${group.id}/edit`}
+              href={`/dashboard/groups/${group.id}/edit`}
               className={buttonVariants({ variant: "outline", size: "sm" })}
             >
               <HugeiconsIcon icon={PencilIcon} className="size-3.5" />

@@ -1,25 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Geist, Geist_Mono, Figtree } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import QueryProvider from "@/components/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
+import { NavigationProgress } from "@/components/layout/navigation-progress";
 import "../globals.css";
-
-const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -36,8 +25,17 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    icons: { apple: "/apple-touch-icon.png" },
   };
 }
+
+export const viewport: Viewport = {
+  themeColor: "#f43f5e",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+};
 
 export default async function LocaleLayout({
   children,
@@ -59,17 +57,28 @@ export default async function LocaleLayout({
       className={cn(
         "h-full",
         "antialiased",
-        geistSans.variable,
-        geistMono.variable,
         "font-sans",
-        figtree.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="Hellosis" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="mobile-web-app-capable" content="yes" />
+      </head>
+      <body
+        className={cn(
+          "min-h-full flex flex-col bg-background text-foreground",
+          "supports-[height:100dvh]:min-h-dvh",
+        )}
+      >
         <NextIntlClientProvider>
-          <QueryProvider>{children}</QueryProvider>
+          <NavigationProgress>
+            <QueryProvider>{children}</QueryProvider>
+          </NavigationProgress>
           <Toaster />
         </NextIntlClientProvider>
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );

@@ -23,7 +23,7 @@ export function PlaceCard({ place }: PlaceCardProps) {
   const t = useTranslations("places.card")
 
   return (
-    <Link href={`/places/${place.id}`} className="group/card block">
+    <Link href={`/dashboard/places/${place.id}`} className="group/card block">
       <Card className="relative overflow-hidden transition-colors group-hover/card:bg-accent/50">
         {place.imageUrl && (
           <div className="relative h-40 w-full overflow-hidden">

@@ -1,12 +1,10 @@
-import { cookies } from "next/headers"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { InboxIcon } from "@hugeicons/core-free-icons"
 
-import { redirect, Link } from "@/i18n/navigation"
+import { Link } from "@/i18n/navigation"
 import { Logo } from "@/components/common/logo"
 import { buttonVariants } from "@/components/ui/button"
-import { SESSION_COOKIE, type Session } from "@/lib/session"
 import { DiscoverPage } from "@/components/matching/discover-page"
 
 export default async function DiscoverRoute({
@@ -17,22 +15,6 @@ export default async function DiscoverRoute({
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations("discover")
-
-  const cookieStore = await cookies()
-  const raw = cookieStore.get(SESSION_COOKIE)?.value
-  let session: Session | null = null
-  if (raw) {
-    try {
-      session = JSON.parse(decodeURIComponent(raw)) as Session
-    } catch {
-      session = null
-    }
-  }
-
-  if (!session) {
-    redirect({ href: "/login", locale })
-    throw new Error("unreachable")
-  }
 
   return (
     <div className="relative min-h-full overflow-hidden bg-background">

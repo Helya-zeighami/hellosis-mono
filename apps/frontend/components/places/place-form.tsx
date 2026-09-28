@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
+import { ImageUpload } from "@/components/common/image-upload"
 import { useCitySearch } from "@/hooks/use-profile"
 import { usePlaceCategories } from "@/hooks/use-places"
 import type { City, PlaceCategory } from "@/services"
@@ -295,13 +296,8 @@ export function PlaceForm({
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="place-image">{t("imageLabel")}</Label>
-        <Input
-          id="place-image"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          placeholder={t("imagePlaceholder")}
-        />
+        <Label>{t("imageLabel")}</Label>
+        <ImageUpload value={imageUrl} onChange={(url) => setImageUrl(url ?? "")} label={t("uploadImage")} helpText={t("imageHelp")} />
       </div>
 
       <Button type="submit" disabled={isPending || !isValid}>

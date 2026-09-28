@@ -61,6 +61,7 @@ export function useConversation(conversationId: string) {
     queryFn: () =>
       getConversation(conversationId).then((res) => res.data as Conversation),
     enabled: conversationId.length > 0,
+    staleTime: 30_000,
   })
 }
 
@@ -70,6 +71,7 @@ export function useMessages(conversationId: string) {
     queryFn: () =>
       getMessages(conversationId).then((res) => res.data as Message[]),
     enabled: conversationId.length > 0,
+    staleTime: 30_000,
   })
 }
 

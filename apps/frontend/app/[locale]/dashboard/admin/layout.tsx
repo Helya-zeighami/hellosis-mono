@@ -1,9 +1,7 @@
-import { cookies } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { redirect, Link } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { Logo } from "@/components/common/logo";
-import { SESSION_COOKIE, type Session } from "@/lib/session";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import LogoutButton from "../logout-button";
@@ -18,22 +16,6 @@ export default async function AdminLayout({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("admin");
-
-  const cookieStore = await cookies();
-  const raw = cookieStore.get(SESSION_COOKIE)?.value;
-  let session: Session | null = null;
-  if (raw) {
-    try {
-      session = JSON.parse(decodeURIComponent(raw)) as Session;
-    } catch {
-      session = null;
-    }
-  }
-
-  if (!session || session.user.role !== "ADMIN") {
-    redirect({ href: "/dashboard", locale });
-    throw new Error("unreachable");
-  }
 
   const navItems = [
     { href: "/dashboard/admin", label: t("nav.overview") },

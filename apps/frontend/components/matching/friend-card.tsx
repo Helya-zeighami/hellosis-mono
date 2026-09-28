@@ -86,7 +86,7 @@ export function FriendCard({ friend }: { friend: Friend }) {
         <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
           <SendMessageButton userId={friend.userId} />
           <Link
-            href={`/profile/${friend.id}`}
+            href={`/dashboard/profile/${friend.id}`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             {actions("viewProfile")}

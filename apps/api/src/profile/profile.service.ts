@@ -228,9 +228,11 @@ export class ProfileService {
         },
 
         data: {
-          bio: dto.bio,
-          avatarUrl: dto.avatarUrl,
-          cityId: dto.cityId,
+          ...(dto.bio !== undefined && { bio: dto.bio }),
+          ...(dto.avatarUrl !== undefined && { avatarUrl: dto.avatarUrl }),
+          ...(dto.cityId !== undefined && { cityId: dto.cityId }),
+          ...(dto.firstName !== undefined && { firstName: dto.firstName.trim() }),
+          ...(dto.lastName !== undefined && { lastName: dto.lastName.trim() }),
         },
 
         include: {

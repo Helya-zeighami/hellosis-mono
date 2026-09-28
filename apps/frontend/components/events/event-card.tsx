@@ -85,7 +85,7 @@ export function EventCard({ event }: EventCardProps) {
 
       <CardFooter className="pt-0">
         <Link
-          href={`/events/${event.id}`}
+          href={`/dashboard/events/${event.id}`}
           className={buttonVariants({
             variant: "outline",
             size: "sm",

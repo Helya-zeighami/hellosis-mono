@@ -1,4 +1,5 @@
 export { http, apiFetch, HttpError } from "./http"
+export { uploadImage } from "./uploads"
 export { queryKeys } from "./query-keys"
 export { signup, login, logout, refresh, type SignupResponse, type SignupData, type LoginResponse, type LoginData, type LogoutResponse, type RefreshResponse } from "./auth"
 export {

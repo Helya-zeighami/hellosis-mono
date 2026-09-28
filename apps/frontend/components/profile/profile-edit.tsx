@@ -6,11 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Loading03Icon, UserCircleIcon } from "@hugeicons/core-free-icons"
+import { Loading03Icon } from "@hugeicons/core-free-icons"
 import { useFormatter, useTranslations } from "next-intl"
 
 import { Link } from "@/i18n/navigation"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Card,
@@ -24,6 +23,7 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
+import { ImageUpload } from "@/components/common/image-upload"
 
 import { InterestSelector } from "@/components/profile/interest-selector"
 import { CityCombobox } from "@/components/profile/city-combobox"
@@ -63,12 +63,6 @@ function EditProfileSkeleton() {
   )
 }
 
-function getInitials(firstName?: string | null, lastName?: string | null) {
-  const first = firstName?.trim().charAt(0) ?? ""
-  const last = lastName?.trim().charAt(0) ?? ""
-  return (first + last).toUpperCase() || null
-}
-
 export default function EditProfilePage() {
   const t = useTranslations("profile.edit")
   const format = useFormatter()
@@ -85,8 +79,10 @@ export default function EditProfilePage() {
   const initializedRef = useRef(false)
 
   const schema = z.object({
+    firstName: z.string().trim().min(1, t("firstNameRequired")).max(80),
+    lastName: z.string().trim().min(1, t("lastNameRequired")).max(80),
     bio: z.string().max(500, t("bioTooLong")),
-    avatarUrl: z.union([z.string().url(t("avatarInvalid")), z.literal("")]),
+    avatarUrl: z.string().optional(),
   })
 
   type FormValues = z.infer<typeof schema>
@@ -95,10 +91,11 @@ export default function EditProfilePage() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { bio: "", avatarUrl: "" },
+    defaultValues: { firstName: "", lastName: "", bio: "", avatarUrl: "" },
   })
 
   const [previewAvatarUrl, setPreviewAvatarUrl] = useState("")
@@ -110,6 +107,8 @@ export default function EditProfilePage() {
     reset({
       bio: profile.bio ?? "",
       avatarUrl: profile.avatarUrl ?? "",
+      firstName: profile.firstName ?? "",
+      lastName: profile.lastName ?? "",
     })
     setPreviewAvatarUrl(profile.avatarUrl ?? "")
     setSelectedCity(profile.city)
@@ -133,13 +132,14 @@ export default function EditProfilePage() {
     )
   }
 
-  const initials = getInitials(profile.firstName, profile.lastName)
   const birthDate = profile.birthDate
     ? format.dateTime(new Date(profile.birthDate), { dateStyle: "long" })
     : null
 
   const onSubmit = (values: FormValues) => {
     const payload: UpdateProfileInput = {
+      firstName: values.firstName,
+      lastName: values.lastName,
       bio: values.bio,
       avatarUrl: values.avatarUrl ? values.avatarUrl : undefined,
       cityId: selectedCity?.id ?? undefined,
@@ -207,11 +207,13 @@ export default function EditProfilePage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="firstName">{t("fields.firstName")}</Label>
-                  <Input id="firstName" value={profile.firstName ?? "—"} readOnly />
+                  <Input id="firstName" autoComplete="given-name" aria-invalid={errors.firstName ? "true" : undefined} {...register("firstName")} />
+                  {errors.firstName && <p className="text-xs text-destructive">{errors.firstName.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="lastName">{t("fields.lastName")}</Label>
-                  <Input id="lastName" value={profile.lastName ?? "—"} readOnly />
+                  <Input id="lastName" autoComplete="family-name" aria-invalid={errors.lastName ? "true" : undefined} {...register("lastName")} />
+                  {errors.lastName && <p className="text-xs text-destructive">{errors.lastName.message}</p>}
                 </div>
               </div>
               <div className="flex flex-col gap-2">
@@ -227,31 +229,7 @@ export default function EditProfilePage() {
               <h2 className="font-heading text-sm font-medium text-muted-foreground">
                 {t("sections.avatar")}
               </h2>
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-4">
-                  <Avatar className="size-16 shrink-0">
-                    {previewAvatarUrl && <AvatarImage src={previewAvatarUrl} alt="Avatar" />}
-                    <AvatarFallback className="bg-rose-100 text-rose-700">
-                      {initials ? (
-                        initials
-                      ) : (
-                        <HugeiconsIcon icon={UserCircleIcon} className="size-8" />
-                      )}
-                    </AvatarFallback>
-                  </Avatar>
-                  <Input
-                    type="url"
-                    placeholder={t("avatarPlaceholder")}
-                    aria-invalid={errors.avatarUrl ? "true" : undefined}
-                    {...register("avatarUrl", {
-                      onChange: (event) => setPreviewAvatarUrl(event.target.value),
-                    })}
-                  />
-                </div>
-                {errors.avatarUrl && (
-                  <p className="text-xs text-destructive">{errors.avatarUrl.message}</p>
-                )}
-              </div>
+              <ImageUpload value={previewAvatarUrl} shape="round" label={t("uploadImage")} helpText={t("imageHelp")} onChange={(url) => { setPreviewAvatarUrl(url ?? ""); setValue("avatarUrl", url ?? "", { shouldDirty: true }) }} />
             </section>
 
             <Separator />

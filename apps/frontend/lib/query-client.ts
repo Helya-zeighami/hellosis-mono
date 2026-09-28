@@ -6,7 +6,7 @@ export function makeQueryClient() {
       queries: {
         staleTime: 60 * 1000,
         refetchOnWindowFocus: false,
-        retry: 1,
+        retry: 0,
       },
     },
   })

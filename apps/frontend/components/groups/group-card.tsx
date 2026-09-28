@@ -67,7 +67,7 @@ export function GroupCard({ group }: GroupCardProps) {
 
       <CardFooter className="pt-0">
         <Link
-          href={`/groups/${group.id}`}
+          href={`/dashboard/groups/${group.id}`}
           className={buttonVariants({ variant: "outline", size: "sm", className: "w-full" })}
         >
           {t("view")}

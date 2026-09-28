@@ -11,8 +11,8 @@ import {
 } from "@/services"
 
 export function useSignup() {
-  return useMutation<SignupResponse, HttpError, string>({
-    mutationFn: (phoneNumber) => signup(phoneNumber),
+  return useMutation<SignupResponse, HttpError, { phoneNumber: string; firstName: string; lastName: string }>({
+    mutationFn: ({ phoneNumber, firstName, lastName }) => signup(phoneNumber, firstName, lastName),
   })
 }
 
@@ -20,9 +20,9 @@ export function useLogin() {
   return useMutation<
     LoginResponse,
     HttpError,
-    { phoneNumber: string; otp?: string }
+    { phoneNumber: string; otp?: string; firstName?: string; lastName?: string }
   >({
-    mutationFn: ({ phoneNumber, otp }) => login(phoneNumber, otp),
+    mutationFn: ({ phoneNumber, otp, firstName, lastName }) => login(phoneNumber, otp, firstName, lastName),
   })
 }
 

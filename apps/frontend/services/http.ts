@@ -77,10 +77,9 @@ async function refreshWithMutex(): Promise<boolean> {
 
 export async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const accessToken = useAuthStore.getState().session?.accessToken
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-    ...options?.headers,
-  }
+  const isFormData = typeof FormData !== "undefined" && options?.body instanceof FormData
+  const headers: HeadersInit = { ...options?.headers }
+  if (!isFormData) (headers as Record<string, string>)["Content-Type"] = "application/json"
   if (accessToken) {
     ;(headers as Record<string, string>).Authorization = `Bearer ${accessToken}`
   }
@@ -133,4 +132,6 @@ export const http = {
   put: <T>(path: string, body?: unknown) =>
     apiFetch<T>(path, { method: "PUT", body: JSON.stringify(body ?? {}) }),
   delete: <T>(path: string) => apiFetch<T>(path, { method: "DELETE" }),
+  upload: <T>(path: string, formData: FormData) =>
+    apiFetch<T>(path, { method: "POST", body: formData }),
 }

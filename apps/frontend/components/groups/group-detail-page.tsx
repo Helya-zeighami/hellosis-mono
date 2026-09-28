@@ -58,7 +58,7 @@ export function GroupDetailPage({ groupId }: GroupDetailPageProps) {
         />
         {group.members.some((member) => member.userId === currentUserId) && (
           <Link
-            href={`/groups/${groupId}/chat`}
+            href={`/dashboard/groups/${groupId}/chat`}
             className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full")}
           >
             <HugeiconsIcon icon={BubbleChatIcon} className="size-4" />

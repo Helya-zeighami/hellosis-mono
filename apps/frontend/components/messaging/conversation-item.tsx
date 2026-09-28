@@ -3,11 +3,12 @@
 import { HugeiconsIcon } from "@hugeicons/react"
 import { UserCircleIcon } from "@hugeicons/core-free-icons"
 import { useFormatter, useTranslations } from "next-intl"
+import { useQueryClient } from "@tanstack/react-query"
 
 import { Link } from "@/i18n/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
-import type { Conversation } from "@/services"
+import { getMessages, queryKeys, type Conversation } from "@/services"
 import { OnlineIndicator } from "./online-indicator"
 import { getDisplayName, getInitials, getOtherUser } from "./helpers"
 
@@ -24,6 +25,7 @@ export function ConversationItem({
 }) {
   const t = useTranslations("messaging")
   const format = useFormatter()
+  const queryClient = useQueryClient()
 
   const otherUser = getOtherUser(conversation, currentUserId)
   const fullName = getDisplayName(otherUser) ?? t("unknown")
@@ -34,9 +36,24 @@ export function ConversationItem({
     ? format.relativeTime(new Date(conversation.lastMessageAt))
     : null
 
+  const prepareConversation = () => {
+    // The list already contains all data needed by the chat header. Seed it
+    // before the route changes, then warm the history request in parallel.
+    queryClient.setQueryData(queryKeys.messages.conversation(conversation.id), conversation)
+    void queryClient.prefetchQuery({
+      queryKey: queryKeys.messages.messages(conversation.id),
+      queryFn: () => getMessages(conversation.id).then((response) => response.data ?? []),
+      staleTime: 30_000,
+    })
+  }
+
   return (
     <Link
-      href={`/messages/${conversation.id}`}
+      href={`/dashboard/messages/${conversation.id}`}
+      prefetch
+      onPointerEnter={prepareConversation}
+      onFocus={prepareConversation}
+      onClick={prepareConversation}
       aria-current={isActive ? "true" : undefined}
       className={cn(
         "flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/60",

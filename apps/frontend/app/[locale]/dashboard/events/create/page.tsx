@@ -1,12 +1,10 @@
-import { cookies } from "next/headers"
 import { setRequestLocale, getTranslations } from "next-intl/server"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { ArrowLeft01Icon } from "@hugeicons/core-free-icons"
 
-import { redirect, Link } from "@/i18n/navigation"
+import { Link } from "@/i18n/navigation"
 import { Logo } from "@/components/common/logo"
 import { buttonVariants } from "@/components/ui/button"
-import { SESSION_COOKIE, type Session } from "@/lib/session"
 import { CreateEventForm } from "@/components/events/create-event-form"
 
 export default async function CreateEventRoute({
@@ -17,22 +15,6 @@ export default async function CreateEventRoute({
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations("events")
-
-  const cookieStore = await cookies()
-  const raw = cookieStore.get(SESSION_COOKIE)?.value
-  let session: Session | null = null
-  if (raw) {
-    try {
-      session = JSON.parse(decodeURIComponent(raw)) as Session
-    } catch {
-      session = null
-    }
-  }
-
-  if (!session) {
-    redirect({ href: "/login", locale })
-    throw new Error("unreachable")
-  }
 
   return (
     <div className="relative min-h-full overflow-hidden bg-background">

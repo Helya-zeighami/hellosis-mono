@@ -12,8 +12,8 @@ export interface SignupData {
   developmentOtp?: string
 }
 
-export function signup(phoneNumber: string) {
-  return http.post<SignupResponse>("/auth/signup", { phoneNumber })
+export function signup(phoneNumber: string, firstName: string, lastName: string) {
+  return http.post<SignupResponse>("/auth/signup", { phoneNumber, firstName, lastName })
 }
 
 export interface LoginResponse {
@@ -28,10 +28,11 @@ export interface LoginData {
   accessToken?: string
   refreshToken?: string
   developmentOtp?: string
+  isNewUser?: boolean
 }
 
-export function login(phoneNumber: string, otp?: string) {
-  return http.post<LoginResponse>("/auth/login", { phoneNumber, otp })
+export function login(phoneNumber: string, otp?: string, firstName?: string, lastName?: string) {
+  return http.post<LoginResponse>("/auth/login", { phoneNumber, otp, firstName, lastName })
 }
 
 export interface RefreshResponse {

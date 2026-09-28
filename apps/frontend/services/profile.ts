@@ -41,6 +41,8 @@ export interface City {
 }
 
 export interface UpdateProfileInput {
+  firstName?: string
+  lastName?: string
   bio?: string
   avatarUrl?: string
   cityId?: string

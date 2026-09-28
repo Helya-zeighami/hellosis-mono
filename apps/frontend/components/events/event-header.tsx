@@ -49,7 +49,7 @@ export function EventHeader({ event, currentUserId }: EventHeaderProps) {
         </h1>
         {isCreator && (
           <Link
-            href={`/events/${event.id}/edit`}
+            href={`/dashboard/events/${event.id}/edit`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             <HugeiconsIcon icon={PencilIcon} className="size-3.5" />

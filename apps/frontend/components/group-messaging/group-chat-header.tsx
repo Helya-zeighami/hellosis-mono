@@ -32,7 +32,7 @@ export function GroupChatHeader({
   return (
     <div className="flex shrink-0 items-center gap-2 border-b border-border/60 px-3 py-2.5">
       <Link
-        href={`/groups/${groupId}`}
+        href={`/dashboard/groups/${groupId}`}
         aria-label={t("backToGroup")}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "md:hidden")}
       >

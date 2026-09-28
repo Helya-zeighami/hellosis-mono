@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { createHash, randomInt } from 'node:crypto';
 
 import { PrismaService } from '../prisma/prisma.service.js';
@@ -6,6 +6,7 @@ import { successResponse } from '../common/utils/api-response.util.js';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshDto } from './dto/refresh.dto.js';
+import { SignupDto } from './dto/signup.dto.js';
 
 @Injectable()
 export class AuthService {
@@ -28,34 +29,10 @@ export class AuthService {
       User enters phone number
     */
     if (!otp) {
-      // create user if doesn't exist
       if (!user) {
-        user = await this.prisma.user.create({
-          data: {
-            phoneNumber,
-            isVerified: false,
-            profile: {
-              create: {},
-            },
-          },
-        });
+        throw new UnauthorizedException('No account exists for this phone number');
       }
-
-      const code = randomInt(100000, 1000000).toString();
-
-      const codeHash = createHash('sha256').update(code).digest('hex');
-
-      await this.prisma.otpChallenge.create({
-        data: {
-          phoneNumber,
-          codeHash,
-          expiresAt: new Date(Date.now() + 5 * 60 * 1000),
-        },
-      });
-
-      return successResponse('OTP sent successfully', {
-        developmentOtp: code,
-      });
+      return this.createOtpChallenge(phoneNumber);
     }
 
     /*
@@ -121,6 +98,32 @@ export class AuthService {
       },
       ...tokens,
     });
+  }
+
+  async signup(dto: SignupDto) {
+    const existingUser = await this.prisma.user.findUnique({ where: { phoneNumber: dto.phoneNumber } });
+    if (existingUser) throw new ConflictException('An account already exists for this phone number');
+
+    await this.prisma.user.create({
+      data: {
+        phoneNumber: dto.phoneNumber,
+        isVerified: false,
+        profile: { create: { firstName: dto.firstName.trim(), lastName: dto.lastName.trim() } },
+      },
+    });
+    return this.createOtpChallenge(dto.phoneNumber);
+  }
+
+  private async createOtpChallenge(phoneNumber: string) {
+    const code = randomInt(100000, 1000000).toString();
+    await this.prisma.otpChallenge.create({
+      data: {
+        phoneNumber,
+        codeHash: createHash('sha256').update(code).digest('hex'),
+        expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+      },
+    });
+    return successResponse('OTP sent successfully', { developmentOtp: code });
   }
 
   async refresh(dto: RefreshDto) {

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
+import { ImageUpload } from "@/components/common/image-upload"
 import { useCitySearch } from "@/hooks/use-profile"
 import type { City } from "@/services"
 
@@ -111,13 +112,8 @@ export function GroupForm({
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="group-image">{t("imageLabel")}</Label>
-        <Input
-          id="group-image"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          placeholder={t("imagePlaceholder")}
-        />
+        <Label>{t("imageLabel")}</Label>
+        <ImageUpload value={imageUrl} onChange={(url) => setImageUrl(url ?? "")} label={t("uploadImage")} helpText={t("imageHelp")} />
       </div>
 
       <div className="flex flex-col gap-2">

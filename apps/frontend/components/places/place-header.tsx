@@ -50,7 +50,7 @@ export function PlaceHeader({ place, currentUserId }: PlaceHeaderProps) {
         </h1>
         {isCreator && (
           <Link
-            href={`/places/${place.id}/edit`}
+            href={`/dashboard/places/${place.id}/edit`}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             <HugeiconsIcon icon={PencilIcon} className="size-3.5" />

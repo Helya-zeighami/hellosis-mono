@@ -18,6 +18,7 @@ import { EventsModule } from './events/events.module.js';
 import { PlacesModule } from './places/places.module.js';
 import { PlaceCategoriesModule } from './place-categories/place-categories.module.js';
 import { AdminModule } from './admin/admin.module.js';
+import { UploadsModule } from './uploads/uploads.module.js';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AdminModule } from './admin/admin.module.js';
     PlacesModule,
     PlaceCategoriesModule,
     AdminModule,
+    UploadsModule,
   ],
 
   controllers: [

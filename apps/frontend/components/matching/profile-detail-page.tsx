@@ -33,7 +33,7 @@ export function ProfileDetailPage({ profileId }: { profileId: string }) {
 
   useEffect(() => {
     if (ownProfile && ownProfile.id === profileId) {
-      router.replace("/profile")
+      router.replace("/dashboard/profile")
     }
   }, [ownProfile, profileId, router])
 
